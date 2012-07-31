@@ -8,6 +8,10 @@ permissive system;
 unconfined_domain(system);
 relabelto_domain(system);
 
+# Relabel /data/anr.
+allow system system_data_file:dir relabelfrom;
+allow system anr_data_file:dir relabelto;
+
 # Create a socket for receiving info from wpa.
 type_transition system wifi_data_file:sock_file system_wpa_socket;
 allow system self:zygote { specifyids specifyrlimits specifyseinfo };
