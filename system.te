@@ -25,14 +25,17 @@ allow system_app dalvikcache_data_file:file { write setattr };
 unix_socket_connect(system_app, keystore, keystore)
 
 # Read SELinux enforcing status.
+selinux_getenforce(system)
 selinux_getenforce(system_app)
 
 bool manage_selinux true;
 if (manage_selinux) {
 # Set SELinux enforcing status.
+selinux_setenforce(system)
 selinux_setenforce(system_app)
 
 # Set SELinux booleans.
+selinux_setbool(system)
 selinux_setbool(system_app)
 
 # Read syslog to display AVC messages.
