@@ -2,7 +2,6 @@
 <policy>
 
 <!-- 
-    Sample signer stanza for install policy
 
     Rules:
     * A signature is a hex encoded X.509 certificate and is required for each signer tag.
@@ -14,12 +13,12 @@
             a specific package name protected by the signature
     * Zero or more global <package name=""> tags are allowed. These tags allow a policy
       to be set outside any signature for specific package names.
+    * A <default> tag is allowed that can contain install policy for all apps not signed with a
+      previously listed cert and not having a per package global policy.
     * Unknown tags at any level are skipped.
     * Zero or more signer tags are allowed.
     * Zero or more package tags are allowed per signer tag.
     * A <package name=""> tag may not contain another <package name=""> tag. If found, it's skipped.
-    * A <default> tag is allowed that can contain install policy for all apps not signed with a 
-      previously listed cert and not having a per package global policy.
     * When multiple sub elements appear for a tag the following logic is used to
         ultimately determine the type of enforcement:
        ** A blacklist is used if at least one deny-permission tag is found
@@ -30,13 +29,9 @@
           according to the above logic and overrides any signature global policy type.
        ** In order for a policy stanza to be enforced at least one of the above situations must
           apply. Meaning, empty signer, default or package tags will not be accepted.
-    * Each signer/default/global package tag is allowed to contain one <seinfo value=""/> tag.
-      This tag represents additional info that each app can use in setting a SELinux security
-      context on the eventual process. Any <seinfo value=""/> tag found as a child of a
-      <package name=""> tag which is protected (sub element of signer or the default tag) is
-      ignored. It's possible that multiple seinfo tags are relevant for one app. In the event
-      that this happens, the seinfo tag that will be applied is the one for which the corresponding
-      policy stanza is used in the policy decision.
+    * Each signer/default/package (global or attached to a signer) tag is allowed to contain one
+      <seinfo value=""/> tag. This tag represents additional info that each app can use in setting
+      a SELinux security context on the eventual process.
     * Strict enforcing of any xml stanza is not enforced in most cases. This mainly applies to
         duplicate tags which are allowed. In the event that a tag already exists, the original
         tag is replaced.
