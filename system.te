@@ -98,6 +98,9 @@ allow system qtaguid_device:chr_file rw_file_perms;
 # WifiWatchdog uses a packet_socket
 allow system self:packet_socket *;
 
+# 3rd party VPN clients require a tun_socket to be created
+allow system self:tun_socket create;
+
 # Notify init of death.
 allow system init:process sigchld;
 
@@ -156,6 +159,9 @@ allow system urandom_device:chr_file rw_file_perms;
 allow system video_device:chr_file rw_file_perms;
 allow system qemu_device:chr_file rw_file_perms;
 
+# tun device used for 3rd party vpn apps
+allow system tun_device:chr_file rw_file_perms;
+
 # Manage data files.
 allow system data_file_type:dir create_dir_perms;
 allow system data_file_type:notdevfile_class_set create_file_perms;
@@ -204,8 +210,8 @@ allow system domain:file r_file_perms;
 allow system gps_device:chr_file rw_file_perms;
 allow system gps_control:file rw_file_perms;
 
-# system Read/Write udp_socket of untrusted_app
-allow system appdomain:udp_socket { read write };
+# system Read/Write tcp/udp_socket of untrusted_app
+allow system appdomain:{ tcp_socket udp_socket } { setopt read write };
 # Allow abstract socket connection
 allow system rild:unix_stream_socket connectto;
 
