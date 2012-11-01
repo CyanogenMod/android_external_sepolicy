@@ -36,6 +36,7 @@ public class Usage {
 
     public static void printUsage(PrintStream out) {
         out.println("Usage: " + TOOL + " [flags] <--build|--policy> <apks>\n");
+        out.println("Tool to help build and verify MMAC install policies.\n");
         printUsage(out, new String[] {
                 "apks", "List of apks to analyze, space separated. All " +
                 "supplied apks must be absolute paths or relative to " + APKDIR +
