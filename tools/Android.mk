@@ -24,3 +24,4 @@ LOCAL_STATIC_LIBRARIES := libsepol libselinux
 include $(BUILD_HOST_EXECUTABLE)
 
 include $(LOCAL_PATH)/setool/Android.mk
+
