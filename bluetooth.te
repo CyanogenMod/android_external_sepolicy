@@ -1,4 +1,12 @@
-# Domains that can create and use bluetooth sockets.
+# bluetooth subsystem
+type bluetooth, domain;
+app_domain(bluetooth)
+
+# Data file accesses.
+allow bluetooth bluetooth_data_file:dir create_dir_perms;
+allow bluetooth bluetooth_data_file:notdevfile_class_set create_file_perms;
+
+# Other domains that can create and use bluetooth sockets.
 # SELinux does not presently define a specific socket class for
 # bluetooth sockets, nor does it distinguish among the bluetooth protocols.
 allow bluetoothdomain self:socket *;
