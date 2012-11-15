@@ -6,6 +6,7 @@ allow adbd qemu_device:chr_file rw_file_perms;
 allow adbd self:capability { net_raw setgid setuid dac_override sys_boot sys_admin };
 allow adbd rootfs:file entrypoint;
 allow adbd init:process sigchld;
+allow adbd init:unix_stream_socket { read write };
 allow adbd self:tcp_socket *;
 allow adbd self:unix_stream_socket *;
 allow adbd node:tcp_socket node_bind;
