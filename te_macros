@@ -166,6 +166,8 @@ allow $1 ashmem_device:chr_file execute;
 define(`binder_call', `
 # Call the server domain and optionally transfer references to it.
 allow $1 $2:binder { call transfer };
+# Allow the serverdomain to transfer references to the client on the reply.
+allow $2 $1:binder transfer;
 # Receive and use open files from the server.
 allow $1 $2:fd use;
 ')
