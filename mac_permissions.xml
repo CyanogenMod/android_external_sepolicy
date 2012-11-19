@@ -72,7 +72,9 @@
       <allow-permission name="android.permission.ACCESS_MTP" />
       <allow-permission name="android.permission.ACCESS_NETWORK_STATE" />
       <allow-permission name="android.permission.CONNECTIVITY_INTERNAL" />
+      <allow-permission name="android.permission.INTERACT_ACROSS_USERS" />
       <allow-permission name="android.permission.INTERNET" />
+      <allow-permission name="android.permission.MANAGE_USERS" />
       <allow-permission name="android.permission.MODIFY_NETWORK_ACCOUNTING" />
       <allow-permission name="android.permission.READ_EXTERNAL_STORAGE" />
       <allow-permission name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -93,6 +95,7 @@
       <allow-permission name="android.permission.ACCESS_NETWORK_STATE" />
       <allow-permission name="android.permission.ALLOW_ANY_CODEC_FOR_PLAYBACK" />
       <allow-permission name="android.permission.BIND_APPWIDGET" />
+      <allow-permission name="android.permission.BIND_DIRECTORY_SEARCH" />
       <allow-permission name="android.permission.BIND_WALLPAPER" />
       <allow-permission name="android.permission.CALL_PHONE" />
       <allow-permission name="android.permission.CALL_PRIVILEGED" />
