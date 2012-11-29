@@ -27,6 +27,9 @@ unix_socket_connect(system_app, keystore, keystore)
 selinux_getenforce(system)
 selinux_getenforce(system_app)
 
+# Settings app reads sdcard for storage stats
+allow system_app sdcard:dir r_dir_perms;
+
 bool manage_selinux true;
 if (manage_selinux) {
 # Set SELinux enforcing status.
