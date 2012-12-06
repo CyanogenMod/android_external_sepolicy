@@ -3,3 +3,6 @@ type watchdogd, domain;
 allow watchdogd rootfs:file { entrypoint r_file_perms };
 allow watchdogd self:capability mknod;
 allow watchdogd watchdog_device:chr_file rw_file_perms;
+# /dev/__kmsg__ and /dev/__null__
+allow watchdogd device:dir { add_name remove_name };
+allow watchdogd { kmsg_device null_device }:chr_file create_file_perms;
