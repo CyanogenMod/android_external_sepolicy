@@ -43,9 +43,7 @@
 /dev/pvrsrvkm		u:object_r:powervr_device:s0
 /dev/qemu_.*		u:object_r:qemu_device:s0
 /dev/kmsg		u:object_r:kmsg_device:s0
-/dev/__kmsg__		u:object_r:kmsg_device:s0
 /dev/null		u:object_r:null_device:s0
-/dev/__null__		u:object_r:null_device:s0
 /dev/nvhdcp1		u:object_r:video_device:s0
 /dev/nvmap		u:object_r:nv_device:s0
 /dev/nvhost-.*		u:object_r:nv_device:s0
@@ -84,6 +82,7 @@
 /dev/urandom		u:object_r:urandom_device:s0
 /dev/vcs[0-9a-z]*	u:object_r:vcs_device:s0
 /dev/video[0-9]*	u:object_r:video_device:s0
+/dev/watchdog		u:object_r:watchdog_device:s0
 /dev/xt_qtaguid	u:object_r:qtaguid_device:s0
 /dev/zero		u:object_r:zero_device:s0
 #############################
