@@ -65,6 +65,8 @@ net_domain(release_app)
 bluetooth_domain(release_app)
 # Read logs.
 allow release_app log_device:chr_file read;
+# Allow seandroidadmin app to get current state
+selinux_getenforce(release_app);
 
 # Services with isolatedProcess=true in their manifest.
 # In order for isolated_apps to interact with apps that have levelFromUid=true
