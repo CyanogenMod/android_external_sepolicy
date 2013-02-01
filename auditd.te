@@ -1,0 +1,14 @@
+# auditd - Audit event daemon
+type auditd, domain;
+type auditd_exec, exec_type, file_type;
+
+init_daemon_domain(auditd)
+file_type_auto_trans(auditd, system_data_file, audit_log)
+
+dontaudit auditd self:capability dac_override;
+
+allow auditd self:capability2 syslog;
+allow auditd self:capability { audit_control dac_read_search };
+allow auditd self:netlink_audit_socket { write create nlmsg_write read };
+
+allow auditd kernel:system { syslog_read syslog_mod };

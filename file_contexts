@@ -117,6 +117,7 @@
 #
 /system(/.*)?		u:object_r:system_file:s0
 /system/bin/ash		u:object_r:shell_exec:s0
+/system/bin/auditd	u:object_r:auditd_exec:s0
 /system/bin/mksh	u:object_r:shell_exec:s0
 /system/bin/sh		--	u:object_r:shell_exec:s0
 /system/bin/run-as	--	u:object_r:runas_exec:s0
@@ -176,6 +177,8 @@
 /data/data/com.android.settings/files/wallpaper	u:object_r:wallpaper_file:s0
 # Wallpaper file for other users
 /data/system/users/[0-9]+/wallpaper		u:object_r:wallpaper_file:s0
+# Auditd log
+/data/system/audit.log	u:object_r:audit_log:s0
 #############################
 # efs files
 #
