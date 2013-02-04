@@ -162,6 +162,7 @@
 /data/tombstones(/.*)?	u:object_r:tombstone_data_file:s0
 /data/local(/.*)?	u:object_r:shell_data_file:s0
 # Misc data
+/data/misc/audit(/.*)?		u:object_r:audit_log:s0
 /data/misc/bluetoothd(/.*)?	u:object_r:bluetoothd_data_file:s0
 /data/misc/bluetooth(/.*)?	u:object_r:bluetooth_data_file:s0
 /data/misc/bluedroid(/.*)?	u:object_r:bluetooth_data_file:s0
@@ -177,8 +178,6 @@
 /data/data/com.android.settings/files/wallpaper	u:object_r:wallpaper_file:s0
 # Wallpaper file for other users
 /data/system/users/[0-9]+/wallpaper		u:object_r:wallpaper_file:s0
-# Auditd log
-/data/system/audit.log	u:object_r:audit_log:s0
 #############################
 # efs files
 #

@@ -5,7 +5,7 @@ type auditd_exec, exec_type, file_type;
 init_daemon_domain(auditd)
 file_type_auto_trans(auditd, system_data_file, audit_log)
 
-dontaudit auditd self:capability dac_override;
+dontaudit auditd self:capability { dac_override fsetid };
 
 allow auditd self:capability2 syslog;
 allow auditd self:capability { audit_control dac_read_search };
