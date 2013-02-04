@@ -7,9 +7,11 @@ file_type_auto_trans(auditd, system_data_file, audit_log)
 
 dontaudit auditd self:capability fsetid;
 
-allow auditd self:capability audit_control;
+allow auditd self:capability { audit_control setuid setgid };
+allow auditd self:capability2 syslog;
 allow auditd self:netlink_audit_socket { write create nlmsg_write read };
 
 allow auditd system_data_file:dir { remove_name };
+allow auditd cgroup:dir { create add_name };
 
 allow auditd kernel:system syslog_read;
