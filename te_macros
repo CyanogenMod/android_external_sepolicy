@@ -286,3 +286,10 @@ allow $1 system_file:file x_file_perms;
 define(`access_kmsg', `
 allow $1 kernel:system syslog_read;
 ')
+
+#####################################
+# access_audit_logs(domain)
+# Ability to read audit logs
+define(`access_audit_logs', `
+allow $1 audit_log:file r_file_perms;
+')
