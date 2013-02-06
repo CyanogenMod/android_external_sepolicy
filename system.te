@@ -36,6 +36,8 @@ selinux_manage_policy(system)
 selinux_manage_policy(system_app)
 access_kmsg(system)
 access_kmsg(system_app)
+access_audit_logs(system)
+access_audit_logs(system_app)
 }
 
 bool manage_mac true;
