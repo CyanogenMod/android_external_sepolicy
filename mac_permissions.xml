@@ -164,6 +164,7 @@
         <allow-permission name="android.permission.MANAGE_ACCOUNTS" />
         <allow-permission name="android.permission.NFC" />
         <allow-permission name="android.permission.READ_CONTACTS" />
+        <allow-permission name="android.permission.READ_CALL_LOG" />
         <allow-permission name="android.permission.READ_EXTERNAL_STORAGE" />
         <allow-permission name="android.permission.READ_PROFILE" />
         <allow-permission name="android.permission.READ_SYNC_SETTINGS" />

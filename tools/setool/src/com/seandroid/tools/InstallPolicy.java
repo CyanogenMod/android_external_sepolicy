@@ -125,3 +125,27 @@ class BlackListPolicy extends InstallPolicy {
         return true;
     }
 }
+
+class DenyPolicy extends InstallPolicy {
+
+    DenyPolicy(HashSet<String> policyPerms, HashMap<String, InstallPolicy> packagePolicy) {
+        super(policyPerms, packagePolicy);
+    }
+
+    @Override
+    public boolean passedPolicyChecks(String packageName, Set<String> perms) {
+        if (packagePolicy.containsKey(packageName)) {
+            boolean passed =  packagePolicy.get(packageName).passedPolicyChecks(packageName, perms);
+            if (!passed) {
+                policyError = packagePolicy.get(packageName).policyError;
+            }
+            return passed;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "deny-all";
+    }
+}

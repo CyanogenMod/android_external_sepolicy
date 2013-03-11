@@ -135,7 +135,9 @@ public class PolicyParser {
             permPolicyType = new WhiteListPolicy(allowPolicyPerms, packagePolicy);
         else if (allowAll)
             permPolicyType = new InstallPolicy(null, packagePolicy);
-        
+        else if (!packagePolicy.isEmpty())
+            permPolicyType = new DenyPolicy(null, packagePolicy);
+
         return permPolicyType;
     }
     
