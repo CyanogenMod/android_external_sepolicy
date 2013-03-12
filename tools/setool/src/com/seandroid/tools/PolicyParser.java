@@ -45,7 +45,7 @@ public class PolicyParser {
     /**
      * Parses a mac_permissions.xml file and determines its internal policy
      * structure. All errors are treated as exceptions and are thrown
-     * as Exception class. 
+     * as Exception class.
      */
     public static void PolicyStart(File policyFile) throws Exception {
 
@@ -62,6 +62,8 @@ public class PolicyParser {
                                  "found. Using the first to determine policy.");
 
         Node nNode = nList.item(0);
+        if (nNode == null)
+            throw new Exception("No " + PolicyBuilder.POLICY + " root tag found.");
 
         NodeList policyChildren = nNode.getChildNodes();
         for (int i = 0; i < policyChildren.getLength(); ++i) {
@@ -89,17 +91,17 @@ public class PolicyParser {
                         mInstallPackagePolicy.put(name, type);
                 }
             }
-        }    
+        }
     }
 
     private static InstallPolicy determineInstallPolicyType(Node node, boolean notInsidePackageTag) {
 
         final HashSet<String> allowPolicyPerms = new HashSet<String>();
         final HashSet<String> denyPolicyPerms = new HashSet<String>();
-        
+
         final HashMap<String, InstallPolicy> packagePolicy =
             new HashMap<String, InstallPolicy>();
-        
+
         boolean allowAll = false;
         NodeList policyChildren = node.getChildNodes();
         for (int i = 0; i < policyChildren.getLength(); ++i) {
@@ -127,7 +129,7 @@ public class PolicyParser {
                 }
             }
         }
-        
+
         InstallPolicy permPolicyType = null;
         if (denyPolicyPerms.size() > 0)
             permPolicyType = new BlackListPolicy(denyPolicyPerms, packagePolicy);
@@ -140,7 +142,6 @@ public class PolicyParser {
 
         return permPolicyType;
     }
-    
 
     /**
      * Policy checks work as follows:
@@ -149,34 +150,39 @@ public class PolicyParser {
      * for any package name or default based stanzas. Package names are checked
      * first then default policy.
      */
-    public static boolean passedPolicy(Set<String> sigs, Set<String> perms, String name) {
-        
+    public static String passedPolicy(Set<String> sigs, Set<String> perms, String name) {
+
         // signature based policy
         String sigErrorMessage = null;
         for (String s : sigs) {
             if (s == null) {
                 continue;
             }
-            
+
             if (mInstallSignaturePolicy.containsKey(s)) {
                 InstallPolicy policy = mInstallSignaturePolicy.get(s);
                 boolean passed = policy.passedPolicyChecks(name, perms);
                 if (passed) {
-                    return true;
+                    // if we have a pass then we don't care about other sig failures
+                    return null;
                 }
-                sigErrorMessage = "\nSignautre based policy used\n" + policy.policyError;
+                sigErrorMessage = "\nSignature based policy (" + s.substring(0,4) + "..." +
+                    s.substring(s.length()-4,s.length()) + ") checked.\n" + policy.policyError;
             }
-        }    
-        
+        }
+
         // package name based policy
         if (mInstallPackagePolicy.containsKey(name)) {
             InstallPolicy policy = mInstallPackagePolicy.get(name);
             boolean passed = policy.passedPolicyChecks(name, perms);
             if (!passed) {
-                System.err.println("\nPackage name policy stanza used.\n" +
-                                   policy.policyError);
+                sigErrorMessage += "\nPackage name policy (" + name + ") checked.\n" +
+                    policy.policyError;
+            } else {
+                // if we did pass then we don't care that a signature one may of failed
+                sigErrorMessage = null;
             }
-            return passed;
+            return sigErrorMessage;
         }
 
         // default policy
@@ -184,23 +190,22 @@ public class PolicyParser {
             InstallPolicy policy = mInstallSignaturePolicy.get(null);
             boolean passed = policy.passedPolicyChecks(name, perms);
             if (!passed) {
-                System.err.println("\nDefault policy stanza used.\n" +
-                                   policy.policyError);
+                sigErrorMessage += "\nDefault policy stanza checked.\n" +
+                    policy.policyError;
+            } else {
+                sigErrorMessage = null;
             }
-            return passed;
+            return sigErrorMessage;
         }
 
         // no package name or default policy so print the signature
         // based error message if one exists. Prints the last
         // signature based error message if multiple ones exist.
-        if (sigErrorMessage != null) {
-            System.err.println(sigErrorMessage);
-        } else {
-            System.err.println("\nPolicy rejected package " + name +
-                               "\nNo policy stanza matched.");
+        if (sigErrorMessage == null) {
+            sigErrorMessage += "\nNo policy stanza checked.\n";
         }
 
-        return false;
+        return sigErrorMessage;
     }
 
 }

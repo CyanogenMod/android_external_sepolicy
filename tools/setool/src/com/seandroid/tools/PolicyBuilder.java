@@ -34,7 +34,7 @@ public class PolicyBuilder {
     static final String SIGNATURE_ATTR   = "signature";
     static final String VALUE_ATTR       = "value";
 
-    private static final String HEADER_XML = 
+    private static final String HEADER_XML =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 
     private static final String XML_END_TAG = " >\n";
@@ -108,7 +108,7 @@ public class PolicyBuilder {
     }
 
     private static final Set<String> allowPermsTags(Set<String> perms) {
-        
+
         Set<String> xmlPerms = new HashSet<String>(perms.size());
         for (String perm: perms) {
             StringBuilder str = new StringBuilder(ALLOW_PERM_TAG_START);
@@ -152,7 +152,7 @@ public class PolicyBuilder {
             ret.append(SIGNER_TAG_END);
         }
         return ret.toString();
-    } 
+    }
 
     public static final String createAllowPermsStanza(Set<String> x509, Set<String> perms,
                                                       String name, String seinfo) {

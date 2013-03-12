@@ -83,7 +83,7 @@ public class Package {
     }
 
     public void aapt(String apk) {
-        
+
         String path = System.getenv("ANDROID_HOST_OUT");
         String CMD = AAPT_CMD;
         if (path == null) {
@@ -100,16 +100,16 @@ public class Package {
             InputStreamReader isr =
                 new InputStreamReader(proc.getInputStream());
 
-            BufferedReader in = new BufferedReader(isr);  
-            String line = null;  
-            while ((line = in.readLine()) != null) {  
+            BufferedReader in = new BufferedReader(isr);
+            String line = null;
+            while ((line = in.readLine()) != null) {
                 if (line.startsWith(AAPT_PACKAGE)) {
                     mPackageName = line.substring(AAPT_PACKAGE.length() + 1);
                 } else if (line.startsWith(AAPT_USES_PERMISSION)) {
                     int spot = AAPT_USES_PERMISSION.length() + 1;
                     mUsesPerms.add(line.substring(spot));
                 }
-            }  
+            }
 
             for (String perm : SPLIT_PERMS.keySet()) {
                 if (mUsesPerms.contains(perm)) {
@@ -118,34 +118,34 @@ public class Package {
             }
 
         } catch (IOException e) {
-            ERROR.println("Had trouble with 'aapt' process. Results for " + 
+            ERROR.println("Had trouble with 'aapt' process. Results for " +
                                apk + " questionable: " + e.toString());
         }
     }
 
 
     public void readCerts(String apk) {
-        
+
         try {
             JarFile jarFile = new JarFile(apk);
             JarEntry jarEntry = jarFile.getJarEntry(ANDROID_MANIFEST_FILE);
-            
+
             byte[] readBuffer = new byte[8192];
-        
-            InputStream is = 
+
+            InputStream is =
                 new BufferedInputStream(jarFile.getInputStream(jarEntry));
 
             while (is.read(readBuffer, 0, readBuffer.length) != -1) {
                 ; // we only read to get to the cert
             }
             is.close();
-            
+
             Certificate[] certs = jarEntry.getCertificates();
             if (certs == null) {
                 System.err.println("No certs found for " + apk);
                 return;
             }
-            
+
             for (Certificate cert : certs) {
                 byte sigs[] = cert.getEncoded();
                 int N = sigs.length;

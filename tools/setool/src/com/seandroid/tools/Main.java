@@ -69,7 +69,7 @@ public class Main {
             Usage.printUsage(System.err);
             System.exit(EXIT_ERROR);
         }
-        
+
         for (int index = 0; index < args.length; index++) {
             String arg = args[index];
 
@@ -91,7 +91,7 @@ public class Main {
             } else if (Usage.OUTFILE.equals(arg)) {
                 File out = new File(getArg(args, ++index));
                 if (out.exists() && !out.canWrite()) {
-                    ERROR.println(out.getPath() + ": Not writable. " + 
+                    ERROR.println(out.getPath() + ": Not writable. " +
                                        "Writing to stdout instead.");
                     continue;
                 }
@@ -103,7 +103,7 @@ public class Main {
             } else if (arg.startsWith("-")) {
                 ERROR.println("Invalid argument " + arg + ".\n");
                 Usage.printUsage(System.err);
-                System.exit(EXIT_ERROR);    
+                System.exit(EXIT_ERROR);
             } else {
                 // Any piece not prefixed with '-' is considered an apk.
                 // Make sure it sorta looks like an apk
@@ -163,9 +163,14 @@ public class Main {
                 Set<String> sigs = app.getCerts();
                 Set<String> perms = app.getPerms();
                 String name = app.getPackageName();
-                boolean pass = PolicyParser.passedPolicy(sigs, perms, name);
-                if (pass)
-                    ERROR.println("Policy passed for " + name + " (" + apk + ").");
+                String error = PolicyParser.passedPolicy(sigs, perms, name);
+                if (error == null) {
+                    ERROR.println("MMAC policy passed for " + name + " (" + apk + ").");
+                } else {
+                    ERROR.println("\n\nMMAC policy failed for " + name + " (" + apk + ").\n" +
+                                  error);
+                    System.exit(EXIT_ERROR);
+                }
             } else {
                 ERROR.println("Didn't specify a proper policy option.");
                 Usage.printUsage(System.out);
