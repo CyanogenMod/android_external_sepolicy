@@ -41,7 +41,7 @@ BOARD_SEPOLICY_DIRS is set to
 "vendor/widget/common/sepolicy device/widget/x/sepolicy" and shell.te
 appears in both locations, it is an error. Unless it is in
 BOARD_SEPOLICY_IGNORE to be filtered out. See BOARD_SEPOLICY_IGNORE
-for more details. 
+for more details.
 
 It is an error to specify the same file name in both
 BOARD_POLICY_REPLACE and BOARD_POLICY_UNION.

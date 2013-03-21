@@ -25,7 +25,7 @@ neverallow appdomain kernel:security load_policy;
 # Privileged netlink socket interfaces.
 neverallow appdomain self:{ netlink_socket netlink_firewall_socket netlink_tcpdiag_socket netlink_nflog_socket netlink_xfrm_socket netlink_selinux_socket netlink_audit_socket netlink_ip6fw_socket netlink_dnrt_socket netlink_kobject_uevent_socket } *;
 
-# Access to /proc/pid entries for any non-app domain. 
+# Access to /proc/pid entries for any non-app domain.
 # Violated by cts.te rules so commented out for now.
 #neverallow appdomain { domain - appdomain }:dir search;
 #neverallow appdomain { domain - appdomain }:lnk_file read;
