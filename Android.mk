@@ -81,7 +81,7 @@ $(sepolicy_policy.conf) : $(call build_policy, security_classes initial_sids acc
 $(LOCAL_BUILT_MODULE) : $(sepolicy_policy.conf) $(HOST_OUT_EXECUTABLES)/checkpolicy
 	@mkdir -p $(dir $@)
 	$(hide) $(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $@ $<
-	$(hide) $(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $(ANDROID_PRODUCT_OUT)/$(notdir $@).dontaudit $<.dontaudit
+	$(hide) $(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $(dir $<)/$(notdir $@).dontaudit $<.dontaudit
 
 built_sepolicy := $(LOCAL_BUILT_MODULE)
 sepolicy_policy.conf :=
