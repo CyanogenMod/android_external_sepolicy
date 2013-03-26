@@ -114,6 +114,9 @@ allow system self:tun_socket create;
 # Notify init of death.
 allow system init:process sigchld;
 
+# 3rd party VPN clients require a tun_socket to be created
+allow system self:tun_socket create;
+
 # Talk to init and various daemons via sockets.
 unix_socket_connect(system, property, init)
 unix_socket_connect(system, qemud, qemud)
@@ -224,6 +227,7 @@ allow system gps_control:file rw_file_perms;
 
 # system Read/Write tcp/udp_socket of untrusted_app
 allow system appdomain:{ tcp_socket udp_socket } { setopt read write };
+
 # Allow abstract socket connection
 allow system rild:unix_stream_socket connectto;
 
