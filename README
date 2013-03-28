@@ -55,7 +55,7 @@ is passed to filter-out to remove any paths you may want to ignore. This
 is useful if you have numerous config directories that contain a file
 and you want to NOT include a particular file in your resulting
 policy file, either by UNION or REPLACE.
-Eg.) Suppose the follwoing:
+Eg.) Suppose the following:
      BOARD_SEPOLICY_DIRS := X Y
      BOARD_SEPOLICY_REPLACE := A
      BOARD_SEPOLICY_IGNORE := X/A
@@ -99,8 +99,8 @@ mac_permissions.xml:
       mac_permissions.xml to public keys found in pem files. This script takes
       a mac_permissions.xml file(s) and configuration file in order to operate.
       Details of the configuration file (keys.conf) can be found in the subsection
-      keys.conf. This script is also responsible for stipping the comments and
-      whitespace from the xml file.
+      keys.conf. This tool is also responsible for stripping the comments and
+      whitespace during processing.
 
       keys.conf
         The keys.conf file is used for controlling the mapping of "tags" found in
