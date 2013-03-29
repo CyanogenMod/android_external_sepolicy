@@ -58,7 +58,7 @@
 
 -->
 
-    <!-- Platform dev key with AOSP -->
+    <!-- Platform dev key in AOSP -->
     <signer signature="@PLATFORM" >
       <allow-all />
       <seinfo value="platform" />
