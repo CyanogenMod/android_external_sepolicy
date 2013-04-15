@@ -27,6 +27,8 @@ allow platform_app apk_private_data_file:dir search;
 # ASEC
 allow platform_app asec_apk_file:dir create_dir_perms;
 allow platform_app asec_apk_file:file create_file_perms;
+# Allow BackupManagerService to backup all app domains
+allow platform_app appdomain:fifo_file write;
 
 # Apps signed with the media key.
 type media_app, domain;
@@ -98,6 +100,10 @@ if (app_external_sdcard_rw) {
 allow untrusted_app sdcard_external:dir create_dir_perms;
 allow untrusted_app sdcard_external:file create_file_perms;
 }
+
+# child shell or gdbserver pty access.
+type_transition untrusted_app devpts : chr_file app_devpts;
+allow untrusted_app app_devpts:chr_file { open getattr read write ioctl };
 
 #
 # Rules for all app domains.

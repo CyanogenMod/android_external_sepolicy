@@ -30,6 +30,10 @@ selinux_getenforce(system_app)
 # Settings app reads sdcard for storage stats
 allow system_app sdcard_type:dir r_dir_perms;
 
+# Allow settings app to read from asec
+allow system_app asec_apk_file:dir search;
+allow system_app asec_apk_file:file r_file_perms;
+
 #
 # System Server aka system_server spawned by zygote.
 # Most of the framework services run in this process.
@@ -73,6 +77,9 @@ allow system appdomain:{ file lnk_file } rw_file_perms;
 # Read/Write to /proc/net/xt_qtaguid/ctrl and and /dev/xt_qtaguid.
 allow system qtaguid_proc:file rw_file_perms;
 allow system qtaguid_device:chr_file rw_file_perms;
+
+# Write to /proc/sysrq-trigger
+allow system sysrq_proc:file w_file_perms;
 
 # WifiWatchdog uses a packet_socket
 allow system self:packet_socket *;

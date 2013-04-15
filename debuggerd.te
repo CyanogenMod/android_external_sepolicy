@@ -17,3 +17,5 @@ allow debuggerd tombstone_data_file:dir create_dir_perms;
 allow debuggerd tombstone_data_file:file create_file_perms;
 allow debuggerd domain:process { sigstop signal };
 allow debuggerd exec_type:file r_file_perms;
+# Access app library
+allow debuggerd system_data_file:file open;

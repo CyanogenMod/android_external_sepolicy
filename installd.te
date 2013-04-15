@@ -6,7 +6,7 @@ init_daemon_domain(installd)
 typeattribute installd mlstrustedsubject;
 allow installd self:capability { chown dac_override fowner fsetid setgid setuid };
 allow installd system_data_file:file create_file_perms;
-allow installd system_data_file:lnk_file create;
+allow installd { system_data_file apk_data_file }:lnk_file create;
 allow installd dalvikcache_data_file:file create_file_perms;
 allow installd data_file_type:dir create_dir_perms;
 allow installd data_file_type:dir { relabelfrom relabelto };

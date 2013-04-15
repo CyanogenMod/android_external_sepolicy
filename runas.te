@@ -49,9 +49,6 @@ allow untrusted_app zygote_exec:file r_file_perms;
 allow untrusted_app shell:process sigchld;
 allow untrusted_app adbd:process sigchld;
 
-# child shell or gdbserver pty access.
-allow untrusted_app devpts:chr_file { getattr read write ioctl };
-
 # gdbserver creates a socket in the app data dir.
 allow untrusted_app app_data_file:sock_file { create unlink };
 
