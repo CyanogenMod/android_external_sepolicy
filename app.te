@@ -105,6 +105,10 @@ allow untrusted_app sdcard_external:file create_file_perms;
 type_transition untrusted_app devpts : chr_file app_devpts;
 allow untrusted_app app_devpts:chr_file { open getattr read write ioctl };
 
+# Asec access for private apps
+allow untrusted_app asec_apk_file:dir { search getattr };
+allow untrusted_app asec_apk_file:file r_file_perms;
+
 #
 # Rules for all app domains.
 #
