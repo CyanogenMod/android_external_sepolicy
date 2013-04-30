@@ -16,6 +16,11 @@ define(`unpriv_socket_class_set', `{ tcp_socket udp_socket unix_stream_socket un
 define(`ipc_class_set', `{ sem msgq shm ipc }')
 
 #####################################
+# Common Application groupings
+#
+define(`non_system_app_set', `{ appdomain -system_app }')
+
+#####################################
 # Common groupings of permissions.
 #
 define(`x_file_perms', `{ getattr execute execute_no_trans }')
