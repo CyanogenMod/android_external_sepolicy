@@ -4,9 +4,8 @@
 # assertions fail.
 
 # Superuser capabilities.
-# Only exception is sys_nice for binder, might not be necessary.
-neverallow { appdomain -bluetooth } self:capability ~sys_nice;
-neverallow bluetooth self:capability ~{ sys_nice net_admin };
+neverallow { appdomain -bluetooth } self:capability *;
+neverallow bluetooth self:capability ~net_admin;
 neverallow appdomain self:capability2 *;
 
 # Block device access.
