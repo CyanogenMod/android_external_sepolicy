@@ -27,8 +27,11 @@ neverallow appdomain tee_device:chr_file { read write };
 # Conditionally allowed to system_app for SEAndroidManager.
 neverallow { domain -unconfineddomain -system -system_app } kernel:security { setenforce setbool };
 
-# Load security policy.
-neverallow appdomain kernel:security load_policy;
+# Load security policy, set avc threshold, set checkreqprot.
+neverallow { domain -unconfineddomain } kernel:security { load_policy setsecparam setcheckreqprot };
+
+# Any security operation by app domains other than system apps.
+neverallow { appdomain -system_app } kernel:security *;
 
 # Privileged netlink socket interfaces.
 neverallow appdomain self:{ netlink_socket netlink_firewall_socket netlink_tcpdiag_socket netlink_nflog_socket netlink_xfrm_socket netlink_selinux_socket netlink_audit_socket netlink_ip6fw_socket netlink_dnrt_socket netlink_kobject_uevent_socket } *;
@@ -45,14 +48,23 @@ neverallow { appdomain -radio } rild_socket:sock_file write;
 neverallow appdomain vold_socket:sock_file write;
 neverallow appdomain zygote_socket:sock_file write;
 
-# Access to /proc/pid entries for any non-app domain.
+# Read access to /proc/pid entries for any non-app domain.
 # Violated by cts.te rules so commented out for now.
 #neverallow appdomain { domain - appdomain }:dir search;
 #neverallow appdomain { domain - appdomain }:lnk_file read;
-#neverallow appdomain { domain - appdomain }:file { read write };
+#neverallow appdomain { domain - appdomain }:file read;
+
+# Write access to /proc/pid entries for any non-app domain.
+neverallow appdomain { domain - appdomain }:file write;
 
 # ptrace access to non-app domains.
 neverallow appdomain { domain -appdomain }:process ptrace;
+
+# signal access to non-app domains.
+# sigchld allowed for parent death notification.
+# signull allowed for kill(pid, 0) existence test.
+# All others prohibited.
+neverallow appdomain { domain -appdomain }:process { sigkill sigstop signal };
 
 # Transition to a non-app domain.
 # Shell excluded since it has a transition to runas.
@@ -66,6 +78,9 @@ neverallow appdomain rootfs:dir_file_class_set { create write setattr relabelfro
 
 # Write to /system.
 neverallow appdomain system_file:dir_file_class_set { create write setattr relabelfrom relabelto append unlink link rename };
+
+# Ensure that all entrypoint executables are in exec_type.
+neverallow domain { file_type -exec_type }:file entrypoint;
 
 # Write to entrypoint executables.
 neverallow appdomain exec_type:file { create write setattr relabelfrom relabelto append unlink link rename };
@@ -100,3 +115,13 @@ neverallow appdomain efs_file:dir_file_class_set { read write };
 neverallow { appdomain -nfc } sysfs:dir_file_class_set write;
 neverallow { appdomain -system_app } selinuxfs:dir_file_class_set write;
 neverallow appdomain proc:dir_file_class_set write;
+
+# Access to syslog(2) or /proc/kmsg.
+neverallow { appdomain -system_app } kernel:system { syslog_read syslog_mod syslog_console };
+
+# Ability to perform any filesystem operation other than statfs(2).
+# i.e. no mount(2), unmount(2), etc.
+neverallow appdomain fs_type:filesystem ~getattr;
+
+# Ability to set system properties.
+neverallow { appdomain -system_app -radio -shell } property_type:property_service set;
