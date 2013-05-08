@@ -272,7 +272,7 @@ static int key_map_validate(key_map *m, int lineno) {
 	}
 
 	/*
-	 * If their is no policy file present,
+	 * If there is no policy file present,
 	 * then it is not going to enforce the types against the policy so just return.
 	 * User and name cannot really be checked.
 	 */
@@ -572,7 +572,7 @@ static void usage() {
 		        "and allows later declarations to override previous ones on a match.\n"
 		        "Options:\n"
 		        "-h - print this help message\n"
-			"-s - enable strict checking of duplicates. This causes the program to exit on a duplicate entry\n"
+			"-s - enable strict checking of duplicates. This causes the program to exit on a duplicate entry with a non-zero exit status\n"
 		        "-v - enable verbose debugging informations\n"
 		        "-p policy file - specify policy file for strict checking of output selectors against the policy\n"
 		        "-o output file - specify output file, default is stdout\n");

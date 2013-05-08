@@ -291,3 +291,9 @@ allow $1 kernel:system syslog_read;
 define(`access_audit_logs', `
 allow $1 audit_log:file r_file_perms;
 ')
+
+#####################################
+# Non system_app application set
+#
+define(`non_system_app_set', `{ appdomain -system_app }')
+
