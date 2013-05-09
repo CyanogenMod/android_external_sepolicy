@@ -36,9 +36,12 @@ allow netd system_prop:property_service set;
 domain_auto_trans(netd, dhcp_exec, dhcp)
 allow netd dhcp:process signal;
 
-allow netd wifi_data_file:file { setattr unlink rw_file_perms };
+allow netd wifi_data_file:file create_file_perms;
 allow netd wifi_data_file:dir w_dir_perms;
 
-# Domain transition for /system/bin/hostapd
+# Start hostapd
 domain_auto_trans(netd, hostapd_exec, hostapd)
 allow netd hostapd:process signal;
+
+# Start dnsmasq
+domain_auto_trans(netd, dnsmasq_exec, dnsmasq)

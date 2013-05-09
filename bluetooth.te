@@ -32,3 +32,7 @@ unix_socket_connect(bluetooth, property, init)
 
 # proc access.
 allow bluetooth proc_bluetooth_writable:file rw_file_perms;
+
+# bluetooth file transfers
+allow bluetooth sdcard_internal:dir create_dir_perms;
+allow bluetooth sdcard_internal:file create_file_perms;

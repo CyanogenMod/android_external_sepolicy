@@ -2,9 +2,9 @@
 type hostapd, domain;
 type hostapd_exec, exec_type, file_type;
 
-allow hostapd self:capability { net_admin net_raw };
+allow hostapd self:capability { net_admin net_raw setuid setgid };
 allow hostapd self:netlink_socket create_socket_perms;
-allow hostapd self:packet_socket create;
+allow hostapd self:packet_socket { create write read };
 allow hostapd self:netlink_route_socket { bind create write nlmsg_write read };
 allow hostapd self:udp_socket { create ioctl };
 

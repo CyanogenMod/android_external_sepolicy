@@ -1,0 +1,11 @@
+# DNS, DHCP services
+type dnsmasq, domain;
+type dnsmasq_exec, exec_type, file_type;
+
+allow dnsmasq self:capability { net_bind_service setgid setuid };
+allow dnsmasq self:tcp_socket { listen setopt create bind };
+
+allow dnsmasq dhcp_data_file:dir w_dir_perms;
+allow dnsmasq dhcp_data_file:file create_file_perms;
+allow dnsmasq port:tcp_socket name_bind;
+allow dnsmasq node:tcp_socket node_bind;
