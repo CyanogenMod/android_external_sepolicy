@@ -1,6 +1,6 @@
 # ueventd seclabel is specified in init.rc since
 # it lives in the rootfs and has no unique file type.
-type ueventd, domain;
+type ueventd, daemon_domain, domain;
 tmpfs_domain(ueventd)
 security_access_policy(ueventd)
 allow ueventd rootfs:file entrypoint;

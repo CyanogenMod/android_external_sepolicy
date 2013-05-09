@@ -3,3 +3,6 @@ type init, domain;
 # init is unconfined.
 unconfined_domain(init)
 tmpfs_domain(init)
+
+# Allow logwrapper to be used by all daemons spawned by init
+allow daemon_domain logwrapper_exec:file entrypoint;
