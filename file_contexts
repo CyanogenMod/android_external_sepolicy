@@ -146,7 +146,6 @@
 /system/bin/tf_daemon	u:object_r:tee_exec:s0
 /system/bin/racoon	u:object_r:racoon_exec:s0
 /system/bin/hostapd     u:object_r:hostapd_exec:s0
-/system/bin/logwrapper     u:object_r:logwrapper_exec:s0
 /system/etc/ppp(/.*)?	u:object_r:ppp_system_file:s0
 /system/etc/dhcpcd(/.*)? u:object_r:dhcp_system_file:s0
 /system/xbin/su		u:object_r:su_exec:s0
