@@ -30,7 +30,6 @@
 # Devices
 #
 /dev(/.*)?		u:object_r:device:s0
-/dev/akm8973.*		u:object_r:akm_device:s0
 /dev/accelerometer	u:object_r:accelerometer_device:s0
 /dev/alarm		u:object_r:alarm_device:s0
 /dev/android_adb.*	u:object_r:adb_device:s0
@@ -40,13 +39,11 @@
 /dev/block(/.*)?	u:object_r:block_device:s0
 /dev/block/loop[0-9]*	u:object_r:loop_device:s0
 /dev/block/ram[0-9]*	u:object_r:ram_device:s0
-/dev/block/mtdblock5	u:object_r:radio_device:s0
 /dev/bus/usb(.*)?       u:object_r:usb_device:s0
 /dev/cam		u:object_r:camera_device:s0
 /dev/console		u:object_r:console_device:s0
 /dev/cpuctl(/.*)?	u:object_r:cpuctl_device:s0
 /dev/device-mapper	u:object_r:dm_device:s0
-/dev/eac		u:object_r:audio_device:s0
 /dev/full		u:object_r:full_device:s0
 /dev/fuse		u:object_r:fuse_device:s0
 /dev/graphics(/.*)?	u:object_r:graphics_device:s0
@@ -60,25 +57,16 @@
 /dev/mpu		u:object_r:gps_device:s0
 /dev/mpuirq		u:object_r:gps_device:s0
 /dev/mtd(/.*)?		u:object_r:mtd_device:s0
-/dev/mtd/mtd5		u:object_r:radio_device:s0
-/dev/mtd/mtd5ro		u:object_r:radio_device:s0
 /dev/mtp_usb		u:object_r:mtp_device:s0
-/dev/pn544		u:object_r:nfc_device:s0
 /dev/ppp		u:object_r:ppp_device:s0
 /dev/ptmx		u:object_r:ptmx_device:s0
 /dev/pvrsrvkm		u:object_r:powervr_device:s0
 /dev/qemu_.*		u:object_r:qemu_device:s0
 /dev/kmsg		u:object_r:kmsg_device:s0
 /dev/null		u:object_r:null_device:s0
-/dev/nvhdcp1		u:object_r:video_device:s0
-/dev/nvmap		u:object_r:nv_device:s0
-/dev/nvhost-.*		u:object_r:nv_device:s0
 /dev/random		u:object_r:random_device:s0
 /dev/rpmsg-omx[0-9]	u:object_r:rpmsg_device:s0
 /dev/rproc_user	u:object_r:rpmsg_device:s0
-/dev/s3c-jpg		u:object_r:camera_device:s0
-/dev/s3c-mem		u:object_r:camera_device:s0
-/dev/s3c-mfc		u:object_r:graphics_device:s0
 /dev/snd(/.*)?		u:object_r:audio_device:s0
 /dev/socket		u:object_r:socket_device:s0
 /dev/socket/adbd	u:object_r:adbd_socket:s0
@@ -86,8 +74,10 @@
 /dev/socket/dbus_bluetooth	u:object_r:bluetooth_socket:s0
 /dev/socket/dbus	u:object_r:dbus_socket:s0
 /dev/socket/dnsproxyd	u:object_r:dnsproxyd_socket:s0
+/dev/socket/gps		u:object_r:gps_socket:s0
 /dev/socket/installd	u:object_r:installd_socket:s0
 /dev/socket/keystore	u:object_r:keystore_socket:s0
+/dev/socket/mdns	u:object_r:mdns_socket:s0
 /dev/socket/netd	u:object_r:netd_socket:s0
 /dev/socket/property_service	u:object_r:property_socket:s0
 /dev/socket/qemud	u:object_r:qemud_socket:s0
@@ -98,8 +88,6 @@
 /dev/socket/wpa_eth[0-9] u:object_r:wpa_socket:s0
 /dev/socket/wpa_wlan[0-9] u:object_r:wpa_socket:s0
 /dev/socket/zygote	u:object_r:zygote_socket:s0
-/dev/spdif_out.*	u:object_r:audio_device:s0
-/dev/tegra.*		u:object_r:video_device:s0
 /dev/tf_driver		u:object_r:tee_device:s0
 /dev/tty		u:object_r:owntty_device:s0
 /dev/tty[0-9]*		u:object_r:tty_device:s0
