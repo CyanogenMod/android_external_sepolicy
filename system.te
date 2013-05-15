@@ -200,7 +200,7 @@ allow system domain:file r_file_perms;
 allow system gps_device:chr_file rw_file_perms;
 allow system gps_control:file rw_file_perms;
 
-# system Read/Write tcp/udp_socket of untrusted_app
+# Allow system_server to use app-created sockets.
 allow system appdomain:{ tcp_socket udp_socket } { setopt read write };
 
 # Allow abstract socket connection

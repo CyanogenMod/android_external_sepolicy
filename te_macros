@@ -109,6 +109,29 @@ tmpfs_domain($1)
 ')
 
 #####################################
+# untrustedapp_domain(domain, file_type)
+# Allow a base set of permissions required for all untrusted apps.
+define(`untrustedapp_domain', `
+# The new domain is part of untrustedappdomain
+typeattribute $1 untrustedappdomain;
+
+# The new untrusted appdomain is a part of appdomain
+app_domain($1)
+
+# Each domain gets a unique devpts type
+type $1_devpts, fs_type;
+
+# pty access.
+type_transition $1 devpts:chr_file $1_devpts;
+allow $1 $1_devpts:chr_file { open getattr read write ioctl };
+
+# App sandbox file accesses.
+# Possibly create a new sandbox for this app
+allow $1 $2:dir create_dir_perms;
+allow $1 $2:notdevfile_class_set create_file_perms;
+')
+
+#####################################
 # platform_app_domain(domain)
 # Allow permissions specific to platform apps.
 define(`platform_app_domain', `
