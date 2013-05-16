@@ -60,7 +60,6 @@
 /dev/mtp_usb		u:object_r:mtp_device:s0
 /dev/ppp		u:object_r:ppp_device:s0
 /dev/ptmx		u:object_r:ptmx_device:s0
-/dev/pvrsrvkm		u:object_r:powervr_device:s0
 /dev/qemu_.*		u:object_r:qemu_device:s0
 /dev/kmsg		u:object_r:kmsg_device:s0
 /dev/null		u:object_r:null_device:s0
