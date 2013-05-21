@@ -3,3 +3,6 @@ type init, domain;
 # init is unconfined.
 unconfined_domain(init)
 tmpfs_domain(init)
+
+# Run sh in its own domain.
+domain_auto_trans(init, shell_exec, init_shell)
