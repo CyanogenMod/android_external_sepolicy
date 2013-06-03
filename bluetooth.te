@@ -10,8 +10,8 @@ allow bluetooth bluetooth_data_file:notdevfile_class_set create_file_perms;
 r_dir_file(bluetooth, bluetooth_efs_file)
 
 # Device accesses.
-bool allow_bluetooth true;
-if (allow_bluetooth) {
+bool disableBluetooth false;
+if (!disableBluetooth) {
 allow bluetooth { tun_device uhid_device hci_attach_dev }:chr_file rw_file_perms;
 allow bluetooth input_device:chr_file write;
 }

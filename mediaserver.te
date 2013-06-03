@@ -35,8 +35,8 @@ allow mediaserver sysfs:file rw_file_perms;
 allow mediaserver { apk_data_file asec_apk_file }:file { read getattr };
 
 # Access camera device.
-bool allow_camera true;
-if (allow_camera) {
+bool disableCamera false;
+if (!disableCamera) {
 allow mediaserver camera_device:chr_file rw_file_perms;
 allow mediaserver rpmsg_device:chr_file rw_file_perms;
 }
