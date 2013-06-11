@@ -23,10 +23,15 @@ allow mediaserver sdcard_type:file write;
 allow mediaserver graphics_device:chr_file rw_file_perms;
 allow mediaserver video_device:chr_file rw_file_perms;
 allow mediaserver audio_device:dir r_dir_perms;
-allow mediaserver audio_device:chr_file rw_file_perms;
 allow mediaserver qemu_device:chr_file rw_file_perms;
 allow mediaserver tee_device:chr_file rw_file_perms;
 allow mediaserver audio_prop:property_service set;
+
+# Access audio device.
+bool disableAudio false;
+if (!disableAudio) {
+allow mediaserver audio_device:chr_file rw_file_perms;
+}
 
 # XXX Label with a specific type?
 allow mediaserver sysfs:file rw_file_perms;
