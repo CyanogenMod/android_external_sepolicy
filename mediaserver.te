@@ -27,10 +27,16 @@ allow mediaserver qemu_device:chr_file rw_file_perms;
 allow mediaserver tee_device:chr_file rw_file_perms;
 allow mediaserver audio_prop:property_service set;
 
-# Access audio device.
+# Access audio devices at all.
 bool disableAudio false;
 if (!disableAudio) {
 allow mediaserver audio_device:chr_file rw_file_perms;
+}
+
+# Access audio capture devices.
+bool disableAudioCapture false;
+if (!disableAudio && !disableAudioCapture) {
+allow mediaserver audio_capture_device:chr_file rw_file_perms;
 }
 
 # XXX Label with a specific type?
