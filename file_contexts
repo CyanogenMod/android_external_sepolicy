@@ -54,6 +54,7 @@
 /dev/kmem		u:object_r:kmem_device:s0
 /dev/log(/.*)?		u:object_r:log_device:s0
 /dev/mem		u:object_r:kmem_device:s0
+/dev/misc/uinput        u:object_r:uinput_device:s0
 /dev/modem.*		u:object_r:radio_device:s0
 /dev/mpu		u:object_r:gps_device:s0
 /dev/mpuirq		u:object_r:gps_device:s0
