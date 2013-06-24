@@ -91,7 +91,7 @@ type dbus_socket, file_type;
 type dnsproxyd_socket, file_type, mlstrustedobject;
 type gps_socket, file_type;
 type installd_socket, file_type;
-type keystore_socket, file_type;
+type keystore_socket, file_type, mlstrustedobject;
 type mdns_socket, file_type;
 type netd_socket, file_type;
 type property_socket, file_type;
