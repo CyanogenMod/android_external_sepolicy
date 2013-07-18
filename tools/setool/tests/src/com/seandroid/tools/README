@@ -1,0 +1,8 @@
+= to run one-shot tests =
+
+java -cp out/host/linux-x86/framework/junit.jar:out/host/linux-x86/framework/setool-tests.jar junit.textui.TestRunner com.seandroid.tools.PolicyBuilderTest
+
+
+= to run all the tests =
+
+java  -cp out/host/linux-x86/framework/junit.jar:out/host/linux-x86/framework/setool-tests.jar junit.textui.TestRunner com.seandroid.tools.AllTests

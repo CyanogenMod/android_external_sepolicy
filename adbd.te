@@ -4,7 +4,7 @@ type adbd, domain, mlstrustedsubject;
 allow adbd adb_device:chr_file rw_file_perms;
 allow adbd qemu_device:chr_file rw_file_perms;
 allow adbd self:capability { net_raw setgid setuid dac_override sys_boot sys_admin };
-allow adbd rootfs:file entrypoint;
+allow adbd rootfs:file { read entrypoint };
 allow adbd init:process sigchld;
 allow adbd self:tcp_socket *;
 allow adbd self:unix_stream_socket *;
@@ -15,9 +15,12 @@ allow adbd cgroup:dir { write add_name create };
 allow adbd labeledfs:filesystem remount;
 allow adbd shell_data_file:dir rw_dir_perms;
 allow adbd shell_data_file:file create_file_perms;
+allow adbd sdcard_type:dir create_dir_perms;
+allow adbd sdcard_type:file create_file_perms;
+allow adbd adb_keys_file:file create_file_perms;
+
 allow adbd graphics_device:dir search;
 allow adbd graphics_device:chr_file r_file_perms;
-allow adbd log_device:chr_file r_file_perms;
 # XXX Run /system/bin/vdc to connect to vold.  Run in a separate domain?
 allow adbd system_file:file rx_file_perms;
 unix_socket_connect(adbd, vold, vold)

@@ -24,6 +24,9 @@ attribute data_file_type;
 # All types use for sysfs files.
 attribute sysfs_type;
 
+# Attribute used for all sdcards
+attribute sdcard_type;
+
 # All types used for nodes/hosts.
 attribute node_type;
 
@@ -47,6 +50,9 @@ attribute mlstrustedobject;
 # Domains that are allowed all permissions ("unconfined").
 attribute unconfineddomain;
 
+# All domains used for shells.
+attribute shelldomain;
+
 # All domains used for apps.
 attribute appdomain;
 
@@ -61,3 +67,9 @@ attribute binderservicedomain;
 
 # Allow domains used for platform (signed by build key) apps.
 attribute platformappdomain;
+
+# Allow domains used for untrusted (signed with non-trusted key) apps.
+attribute untrustedappdomain;
+
+# All app private data directories that should be accessable by all apps
+attribute app_public_data_type;

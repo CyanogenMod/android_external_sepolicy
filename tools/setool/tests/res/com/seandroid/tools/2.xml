@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- All other keys -->
+<default>
+  <seinfo value="default" />
+  <deny-permission name="android.permission.ACCESS_COARSE_LOCATION" />
+  <deny-permission name="android.permission.ACCESS_FINE_LOCATION" />
+  <deny-permission name="android.permission.AUTHENTICATE_ACCOUNTS" />
+  <deny-permission name="android.permission.CALL_PHONE" />
+  <deny-permission name="android.permission.CAMERA" />
+  <deny-permission name="android.permission.READ_LOGS" />
+  <deny-permission name="android.permission.WRITE_EXTERNAL_STORAGE" />
+</default>

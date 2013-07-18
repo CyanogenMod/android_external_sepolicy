@@ -1,0 +1,51 @@
+#!/bin/sh
+
+prog="$0"
+progdir=`dirname "${prog}"`
+
+jarfile=setool-tests.jar
+junit=junit.jar
+frameworkdir="$progdir"
+
+if [ ! -r "$frameworkdir/$jarfile" ]; then
+    frameworkdir=`dirname "$progdir"`/framework
+fi
+if [ ! -r "$frameworkdir/$jarfile" ]; then
+    root="${ANDROID_BUILD_TOP}"
+    if [ -z $root ]; then
+        echo "ANDROID_BUILD_TOP var not found. Trying running 'lunch' command first."
+        exit 1
+    fi
+    root=$root"/out/host"
+    spot="."
+    uname=`uname -a`
+    mac=$(echo $uname | grep "Darwin")
+    if [ -n mac ]; then
+        mac_type=$(echo $uname | grep -e "i386" -e "x86_64")
+        if [ -n mac_type ]; then
+            spot="darwin-x86"
+        else
+            spot="darwin-ppc"
+        fi
+    fi
+    linux=$(echo $uname | grep "Linux")
+    if [ -n linux ]; then
+        spot="linux-x86"
+    fi
+    frameworkdir="$root"/"$spot"/framework
+fi
+if [ ! -r "$frameworkdir/$jarfile" ]; then
+    echo `basename "$prog"`": can't find $jarfile"
+    echo "Make sure setool.jar has been built."
+    exit 1
+fi
+
+if [ ! -r "$frameworkdir/$juint" ]; then
+    echo `basename "$prog"`": can't find $juint"
+    echo "Make sure juint.jar has been built."
+    exit 1
+fi
+
+jarpath="$frameworkdir/$jarfile:$frameworkdir/$junit"
+
+exec java -Xmx128M -cp "$jarpath" junit.textui.TestRunner com.seandroid.tools.AllTests

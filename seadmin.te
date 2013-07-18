@@ -1,0 +1,34 @@
+# Allow seandroidadmin app to get current state
+selinux_getenforce(release_app)
+
+# Used to allow/disallow system_app from
+# managing selinux/mmac. The management
+# is based on the status of the respective
+# management boolean logically anded with
+# this boolean.
+bool system_app_manage false;
+
+bool manage_selinux true;
+if (manage_selinux) {
+access_kmsg(system)
+access_audit_logs(system)
+selinux_manage_policy(system)
+}
+
+if (manage_selinux && system_app_manage) {
+access_kmsg(system_app)
+access_audit_logs(system_app)
+selinux_manage_policy(system_app)
+}
+
+bool manage_mac true;
+if (manage_mac) {
+access_logcat(system)
+mmac_manage_policy(system)
+}
+
+if (manage_mac && system_app_manage) {
+access_logcat(system_app)
+mmac_manage_policy(system_app)
+}
+

@@ -126,6 +126,9 @@ struct policy_info {
 /** Set to !0 to enable verbose logging */
 static int logging_verbose = 0;
 
+/** set to !0 to enable strict checking of duplicate entries */
+static int is_strict = 0;
+
 /** file handle to the output file */
 static FILE *output_file = NULL;
 
@@ -162,8 +165,9 @@ key_map rules[] = {
                 { .name = "domain",         .type = dt_string, .dir = dir_out, .data = NULL },
                 { .name = "type",           .type = dt_string, .dir = dir_out, .data = NULL },
                 { .name = "levelFromUid",   .type = dt_bool,   .dir = dir_out, .data = NULL },
+                { .name = "levelFrom",      .type = dt_string,   .dir = dir_out, .data = NULL },
                 { .name = "level",          .type = dt_string, .dir = dir_out, .data = NULL },
-			};
+};
 
 /**
  * Head pointer to a linked list of
@@ -188,7 +192,9 @@ static line_order_list *list_tail = NULL;
  * @param fmt
  * 	The printf style formatter to use, such as "%d"
  */
-static void log_msg(FILE *out, const char *prefix, const char *fmt, ...) {
+static void __attribute__ ((format(printf, 3, 4)))
+log_msg(FILE *out, const char *prefix, const char *fmt, ...) {
+
 	fprintf(out, "%s", prefix);
 	va_list args;
 	va_start(args, fmt);
@@ -230,6 +236,8 @@ int check_type(sepol_policydb_t *db, char *type) {
  * 	The key map to check
  * @param lineno
  * 	The line number in the source file for the corresponding key map
+ * @return
+ * 	1 if valid, 0 if invalid
  */
 static int key_map_validate(key_map *m, int lineno) {
 
@@ -254,9 +262,18 @@ static int key_map_validate(key_map *m, int lineno) {
 		goto out;
 	}
 
+	if (!strcasecmp(key, "levelFrom") &&
+	    (strcasecmp(value, "none") && strcasecmp(value, "all") &&
+	     strcasecmp(value, "app") && strcasecmp(value, "user"))) {
+		log_error("Unknown levelFrom=%s on line: %d in file: %s\n",
+			  value, lineno, out_file_name);
+		rc = 0;
+		goto out;
+	}
+
 	/*
-	 * If their is no policy file present,
-	 * then it is not in strict mode so just return.
+	 * If there is no policy file present,
+	 * then it is not going to enforce the types against the policy so just return.
 	 * User and name cannot really be checked.
 	 */
 	if (!pol.policy_file) {
@@ -383,12 +400,12 @@ static map_match rule_map_cmp(rule_map *rmA, rule_map *rmB) {
 			}
 
 			if (input_mode) {
-				log_info("Matched input lines: type=%s name=%s data=%s dir=%d\n", mA->type, mA->name, mA->data, mA->dir);
+				log_info("Matched input lines: name=%s data=%s\n", mA->name, mA->data);
 				num_of_matched_inputs++;
 			}
 
 			/* Match found, move on */
-			log_info("Matched lines: type=%s name=%s data=%s dir=%d\n", mA->type, mA->name, mA->data, mA->dir);
+			log_info("Matched lines: name=%s data=%s", mA->name, mA->data);
 			matches++;
 			break;
 		}
@@ -428,8 +445,11 @@ static void rule_map_free(rule_map *rm, rule_map_switch s) {
 		free(m->data);
 	}
 
+/* hdestroy() frees comparsion keys for non glibc */
+#ifdef __GLIBC__
 	if(s == rule_map_destroy_key && rm->key)
 		free(rm->key);
+#endif
 
 	free(rm);
 }
@@ -552,8 +572,9 @@ static void usage() {
 		        "and allows later declarations to override previous ones on a match.\n"
 		        "Options:\n"
 		        "-h - print this help message\n"
+			"-s - enable strict checking of duplicates. This causes the program to exit on a duplicate entry with a non-zero exit status\n"
 		        "-v - enable verbose debugging informations\n"
-		        "-p policy file - specify policy file for strict checking of output selectors\n"
+		        "-p policy file - specify policy file for strict checking of output selectors against the policy\n"
 		        "-o output file - specify output file, default is stdout\n");
 }
 
@@ -640,7 +661,7 @@ static void handle_options(int argc, char *argv[]) {
 	int c;
 	int num_of_args;
 
-	while ((c = getopt(argc, argv, "ho:p:v")) != -1) {
+	while ((c = getopt(argc, argv, "ho:p:sv")) != -1) {
 		switch (c) {
 		case 'h':
 			usage();
@@ -650,6 +671,9 @@ static void handle_options(int argc, char *argv[]) {
 			break;
 		case 'p':
 			pol.policy_file_name = optarg;
+			break;
+		case 's':
+			is_strict = 1;
 			break;
 		case 'v':
 			log_set_verbose();
@@ -663,9 +687,7 @@ static void handle_options(int argc, char *argv[]) {
 				log_error(
 						"Unknown option character `\\x%x'.\n",
 						optopt);
-				exit(EXIT_FAILURE);
 			}
-			break;
 		default:
 			exit(EXIT_FAILURE);
 		}
@@ -778,17 +800,29 @@ static void rule_add(rule_map *rm) {
 			 */
 			preserved_key = tmp->r->key;
 			rule_map_free(tmp->r, rule_map_preserve_key);
+/*  hdestroy() frees comparsion keys for non glibc */
+#ifdef __GLIBC__
 			free(rm->key);
+#endif
 			rm->key = preserved_key;
 			tmp->r = rm;
 		}
 		/* Duplicate */
 		else {
-			log_error("Duplicate line detected in file: %s\n"
+			/* if is_strict is set, then don't allow duplicates */
+			if(is_strict) {
+				log_error("Duplicate line detected in file: %s\n"
+					"Lines %d and %d match!\n",
+					out_file_name, tmp->r->lineno, rm->lineno);
+				rule_map_free(rm, rule_map_destroy_key);
+				goto err;
+			}
+
+			/* Allow duplicates, just drop the entry*/
+			log_info("Duplicate line detected in file: %s\n"
 					"Lines %d and %d match!\n",
 					out_file_name, tmp->r->lineno, rm->lineno);
 			rule_map_free(rm, rule_map_destroy_key);
-			goto err;
 		}
 	}
 	/* It wasn't found, just add the rule map to the table */
@@ -845,11 +879,11 @@ static void parse() {
 		log_info("Got line %d\n", lineno);
 		len = strlen(line_buf);
 		if (line_buf[len - 1] == '\n')
-			line_buf[len - 1] = 0;
+			line_buf[len - 1] = '\0';
 		p = line_buf;
 		while (isspace(*p))
 			p++;
-		if (*p == '#' || *p == 0)
+		if (*p == '#' || *p == '\0')
 			continue;
 
 		token = strtok_r(p, " \t", &saveptr);

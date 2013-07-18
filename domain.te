@@ -5,10 +5,10 @@ allow domain init:process sigchld;
 
 # Read access to properties mapping.
 allow domain kernel:fd use;
-allow domain tmpfs:file read;
+allow domain tmpfs:file { read getattr };
 
-# binder adjusts the nice value during IPC.
-allow domain self:capability sys_nice;
+# Search /storage/emulated tmpfs mount.
+allow domain tmpfs:dir r_dir_perms;
 
 # Intra-domain accesses.
 allow domain self:process ~{ execstack execheap };
@@ -37,23 +37,25 @@ allow domain rootfs:lnk_file { read getattr };
 
 # Device accesses.
 allow domain device:dir search;
+allow domain dev_type:lnk_file read;
 allow domain devpts:dir search;
 allow domain device:file read;
 allow domain socket_device:dir search;
+allow domain owntty_device:chr_file rw_file_perms;
 allow domain null_device:chr_file rw_file_perms;
 allow domain zero_device:chr_file r_file_perms;
 allow domain ashmem_device:chr_file rw_file_perms;
 allow domain binder_device:chr_file rw_file_perms;
 allow domain ptmx_device:chr_file rw_file_perms;
-allow domain powervr_device:chr_file rw_file_perms;
 allow domain log_device:dir search;
-allow domain log_device:chr_file w_file_perms;
-allow domain nv_device:chr_file rw_file_perms;
+allow domain log_device:chr_file rw_file_perms;
 allow domain alarm_device:chr_file r_file_perms;
 allow domain urandom_device:chr_file r_file_perms;
+allow domain random_device:chr_file r_file_perms;
 
 # Filesystem accesses.
 allow domain fs_type:filesystem getattr;
+allow domain fs_type:dir getattr;
 
 # System file accesses.
 allow domain system_file:dir r_dir_perms;
@@ -89,9 +91,8 @@ allow domain ion_device:chr_file rw_file_perms;
 # For /sys/qemu_trace files in the emulator.
 bool in_qemu false;
 if (in_qemu) {
-allow domain sysfs:file rw_file_perms;
-}
 allow domain sysfs_writable:file rw_file_perms;
+}
 
 # Read access to pseudo filesystems.
 r_dir_file(domain, proc)
@@ -100,7 +101,7 @@ r_dir_file(domain, inotify)
 r_dir_file(domain, cgroup)
 
 # debugfs access
-bool debugfs true;
+bool debugfs false;
 if (debugfs) {
 allow domain debugfs:dir r_dir_perms;
 allow domain debugfs:file rw_file_perms;
@@ -108,3 +109,7 @@ allow domain debugfs:file rw_file_perms;
 dontaudit domain debugfs:dir r_dir_perms;
 dontaudit domain debugfs:file  rw_file_perms;
 }
+
+# security files
+allow domain security_file:dir { search getattr };
+allow domain security_file:file getattr;
