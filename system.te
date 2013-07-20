@@ -20,6 +20,9 @@ allow system_app wallpaper_file:file r_file_perms;
 # Write to dalvikcache.
 allow system_app dalvikcache_data_file:file { write setattr };
 
+# Set sys.cpufreq.restored for Performance Settings
+allow system_app system_prop:property_service set;
+
 # Talk to keystore.
 unix_socket_connect(system_app, keystore, keystore)
 
