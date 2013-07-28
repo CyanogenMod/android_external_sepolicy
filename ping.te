@@ -1,5 +1,5 @@
 type ping, domain;
-type ping_exec, file_type;
+type ping_exec, exec_type, file_type;
 domain_auto_trans(shell, ping_exec, ping)
 
 allow ping self:capability net_raw;
