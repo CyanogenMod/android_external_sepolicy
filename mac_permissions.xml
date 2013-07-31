@@ -66,120 +66,24 @@
 
     <!-- Media dev key in AOSP -->
     <signer signature="@MEDIA" >
-      <allow-permission name="android.permission.ACCESS_ALL_DOWNLOADS" />
-      <allow-permission name="android.permission.ACCESS_CACHE_FILESYSTEM" />
-      <allow-permission name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
-      <allow-permission name="android.permission.ACCESS_MTP" />
-      <allow-permission name="android.permission.ACCESS_NETWORK_STATE" />
-      <allow-permission name="android.permission.CONNECTIVITY_INTERNAL" />
-      <allow-permission name="android.permission.INTERACT_ACROSS_USERS" />
-      <allow-permission name="android.permission.INTERNET" />
-      <allow-permission name="android.permission.MANAGE_USERS" />
-      <allow-permission name="android.permission.MODIFY_NETWORK_ACCOUNTING" />
-      <allow-permission name="android.permission.READ_EXTERNAL_STORAGE" />
-      <allow-permission name="android.permission.RECEIVE_BOOT_COMPLETED" />
-      <allow-permission name="android.permission.RECEIVE_WAP_PUSH" />
-      <allow-permission name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
-      <allow-permission name="android.permission.UPDATE_DEVICE_STATS" />
-      <allow-permission name="android.permission.WAKE_LOCK" />
-      <allow-permission name="android.permission.WRITE_EXTERNAL_STORAGE" />
-      <allow-permission name="android.permission.WRITE_MEDIA_STORAGE" />
-      <allow-permission name="android.permission.WRITE_SETTINGS" />
+      <allow-all />
       <seinfo value="media" />
     </signer>
 
     <!-- shared dev key in AOSP -->
     <signer signature="@SHARED" >
-      <allow-permission name="android.permission.ACCESS_COARSE_LOCATION" />
-      <allow-permission name="android.permission.ACCESS_FINE_LOCATION" />
-      <allow-permission name="android.permission.ACCESS_NETWORK_STATE" />
-      <allow-permission name="android.permission.ALLOW_ANY_CODEC_FOR_PLAYBACK" />
-      <allow-permission name="android.permission.BIND_APPWIDGET" />
-      <allow-permission name="android.permission.BIND_DIRECTORY_SEARCH" />
-      <allow-permission name="android.permission.BIND_WALLPAPER" />
-      <allow-permission name="android.permission.CALL_PHONE" />
-      <allow-permission name="android.permission.CALL_PRIVILEGED" />
-      <allow-permission name="android.permission.CAMERA" />
-      <allow-permission name="android.permission.GET_ACCOUNTS" />
-      <allow-permission name="android.permission.GLOBAL_SEARCH" />
-      <allow-permission name="android.permission.INTERNET" />
-      <allow-permission name="android.permission.MANAGE_ACCOUNTS" />
-      <allow-permission name="android.permission.MODIFY_AUDIO_SETTINGS" />
-      <allow-permission name="android.permission.MODIFY_PHONE_STATE" />
-      <allow-permission name="android.permission.NFC" />
-      <allow-permission name="android.permission.PACKAGE_USAGE_STATS" />
-      <allow-permission name="android.permission.READ_CALL_LOG" />
-      <allow-permission name="android.permission.READ_CONTACTS"/>
-      <allow-permission name="android.permission.READ_EXTERNAL_STORAGE" />
-      <allow-permission name="android.permission.READ_PHONE_STATE" />
-      <allow-permission name="android.permission.READ_PROFILE" />
-      <allow-permission name="android.permission.READ_SOCIAL_STREAM" />
-      <allow-permission name="android.permission.READ_SYNC_SETTINGS" />
-      <allow-permission name="android.permission.READ_SYNC_STATS" />
-      <allow-permission name="android.permission.READ_USER_DICTIONARY" />
-      <allow-permission name="android.permission.REBOOT" />
-      <allow-permission name="android.permission.RECEIVE_BOOT_COMPLETED" />
-      <allow-permission name="android.permission.RECORD_AUDIO" />
-      <allow-permission name="android.permission.SET_WALLPAPER" />
-      <allow-permission name="android.permission.SET_WALLPAPER_COMPONENT" />
-      <allow-permission name="android.permission.SET_WALLPAPER_HINTS" />
-      <allow-permission name="android.permission.SUBSCRIBED_FEEDS_READ" />
-      <allow-permission name="android.permission.SUBSCRIBED_FEEDS_WRITE" />
-      <allow-permission name="android.permission.USE_CREDENTIALS" />
-      <allow-permission name="android.permission.VIBRATE" />
-      <allow-permission name="android.permission.WAKE_LOCK" />
-      <allow-permission name="android.permission.WRITE_CALL_LOG" />
-      <allow-permission name="android.permission.WRITE_CONTACTS" />
-      <allow-permission name="android.permission.WRITE_EXTERNAL_STORAGE" />
-      <allow-permission name="android.permission.WRITE_PROFILE" />
-      <allow-permission name="android.permission.WRITE_SETTINGS" />
-      <allow-permission name="android.permission.WRITE_USER_DICTIONARY" />
-      <allow-permission name="com.android.browser.permission.READ_HISTORY_BOOKMARKS"/>
-      <allow-permission name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-      <allow-permission name="com.android.launcher.permission.READ_SETTINGS" />
-      <allow-permission name="com.android.launcher.permission.WRITE_SETTINGS" />
-      <allow-permission name="com.android.voicemail.permission.ADD_VOICEMAIL" />
-      <allow-permission name="com.android.voicemail.permission.READ_WRITE_ALL_VOICEMAIL" />
-      <allow-permission name="com.google.android.googleapps.permission.GOOGLE_AUTH" />
-      <allow-permission name="com.google.android.googleapps.permission.GOOGLE_AUTH.cp" />
-      <allow-permission name="com.google.android.googleapps.permission.GOOGLE_AUTH.mail" />
+      <allow-all />
       <seinfo value="shared" />
     </signer>
 
     <!-- release dev key in AOSP -->
     <signer signature="@RELEASE" >
+      <allow-all />
       <seinfo value="release" />
       <deny-permission name="android.permission.BRICK" />
       <deny-permission name="android.permission.READ_LOGS" />
       <deny-permission name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
       <deny-permission name="com.android.browser.permission.WRITE_HISTORY_BOOKMARKS" />
-      <package name="com.android.browser" >
-        <allow-permission name="android.permission.ACCESS_COARSE_LOCATION"/>
-        <allow-permission name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
-        <allow-permission name="android.permission.ACCESS_FINE_LOCATION"/>
-        <allow-permission name="android.permission.ACCESS_NETWORK_STATE"/>
-        <allow-permission name="android.permission.ACCESS_WIFI_STATE"/>
-        <allow-permission name="android.permission.GET_ACCOUNTS"/>
-        <allow-permission name="android.permission.INTERNET" />
-        <allow-permission name="android.permission.MANAGE_ACCOUNTS" />
-        <allow-permission name="android.permission.NFC" />
-        <allow-permission name="android.permission.READ_CONTACTS" />
-        <allow-permission name="android.permission.READ_CALL_LOG" />
-        <allow-permission name="android.permission.READ_EXTERNAL_STORAGE" />
-        <allow-permission name="android.permission.READ_PROFILE" />
-        <allow-permission name="android.permission.READ_SYNC_SETTINGS" />
-        <allow-permission name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
-        <allow-permission name="android.permission.SET_WALLPAPER" />
-        <allow-permission name="android.permission.USE_CREDENTIALS"/>
-        <allow-permission name="android.permission.WAKE_LOCK"/>
-        <allow-permission name="android.permission.WRITE_EXTERNAL_STORAGE" />
-        <allow-permission name="android.permission.WRITE_SETTINGS" />
-        <allow-permission name="android.permission.WRITE_SYNC_SETTINGS" />
-        <allow-permission name="com.android.browser.permission.READ_HISTORY_BOOKMARKS"/>
-        <allow-permission name="com.android.browser.permission.WRITE_HISTORY_BOOKMARKS"/>
-        <allow-permission name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
-        <seinfo value="release" />
-      </package>
     </signer>
 
     <!-- Most Google-authored apps -->
@@ -191,30 +95,13 @@
 
     <!-- Youtube -->
     <signer signature="30820252308201bb02044934987e300d06092a864886f70d01010405003070310b3009060355040613025553310b3009060355040813024341311630140603550407130d4d6f756e7461696e205669657731143012060355040a130b476f6f676c652c20496e6331143012060355040b130b476f6f676c652c20496e633110300e06035504031307556e6b6e6f776e301e170d3038313230323032303735385a170d3336303431393032303735385a3070310b3009060355040613025553310b3009060355040813024341311630140603550407130d4d6f756e7461696e205669657731143012060355040a130b476f6f676c652c20496e6331143012060355040b130b476f6f676c652c20496e633110300e06035504031307556e6b6e6f776e30819f300d06092a864886f70d010101050003818d00308189028181009f48031990f9b14726384e0453d18f8c0bbf8dc77b2504a4b1207c4c6c44babc00adc6610fa6b6ab2da80e33f2eef16b26a3f6b85b9afaca909ffbbeb3f4c94f7e8122a798e0eba75ced3dd229fa7365f41516415aa9c1617dd583ce19bae8a0bbd885fc17a9b4bd2640805121aadb9377deb40013381418882ec52282fc580d0203010001300d06092a864886f70d0101040500038181004086669ed631da4384ddd061d226e073b98cc4b99df8b5e4be9e3cbe97501e83df1c6fa959c0ce605c4fd2ac6d1c84cede20476cbab19be8f2203aff7717ad652d8fcc890708d1216da84457592649e0e9d3c4bb4cf58da19db1d4fc41bcb9584f64e65f410d0529fd5b68838c141d0a9bd1db1191cb2a0df790ea0cb12db3a4" >
-      <allow-permission name="android.permission.READ_EXTERNAL_STORAGE" />
-      <allow-permission name="android.permission.NFC" />
-      <allow-permission name="android.permission.USE_CREDENTIALS" />
-      <allow-permission name="com.google.android.googleapps.permission.GOOGLE_AUTH.YouTubeUser" />
-      <allow-permission name="android.permission.WRITE_EXTERNAL_STORAGE" />
-      <allow-permission name="android.permission.ACCESS_WIFI_STATE" />
-      <allow-permission name="android.permission.GET_ACCOUNTS" />
-      <allow-permission name="com.google.android.googleapps.permission.GOOGLE_AUTH" />
-      <allow-permission name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-      <allow-permission name="android.permission.RECEIVE_BOOT_COMPLETED" />
-      <allow-permission name="android.permission.CAMERA" />
-      <allow-permission name="android.permission.INTERNET" />
-      <allow-permission name="com.google.android.googleapps.permission.GOOGLE_AUTH.youtube" />
-      <allow-permission name="android.permission.MANAGE_ACCOUNTS" />
-      <allow-permission name="android.permission.CHANGE_NETWORK_STATE" />
-      <allow-permission name="android.permission.WAKE_LOCK" />
-      <allow-permission name="android.permission.ACCESS_NETWORK_STATE" />
-      <allow-permission name="android.permission.ACCESS_COARSE_LOCATION" />
-      <allow-permission name="android.permission.ACCESS_FINE_LOCATION" />
+      <allow-all />
       <seinfo value="google" />
     </signer>
 
     <!-- All other keys -->
     <default>
+      <allow-all />
       <seinfo value="default" />
       <!-- These permissions are legitimate for apps. This list needs
            to be remade with the system|signature perms 
