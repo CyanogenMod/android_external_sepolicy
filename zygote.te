@@ -40,3 +40,6 @@ allow zygote tmpfs:filesystem mount;
 
 # Handle --invoke-with command when launching Zygote with a wrapper command.
 allow zygote zygote_exec:file { execute_no_trans open };
+
+# zygote now bindmounts /system to drop suid
+allow zygote labeledfs:filesystem remount;
