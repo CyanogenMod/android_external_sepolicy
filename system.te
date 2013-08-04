@@ -43,6 +43,10 @@ allow system_app asec_apk_file:file r_file_perms;
 allow system_app property_socket:sock_file write;
 allow system_app init:unix_stream_socket connectto;
 
+# Fix Settings's access to sysfs nodes.
+# (Why isn't the domain authorization sufficient?)
+allow system_app sysfs_writable:file rw_file_perms;
+
 #
 # System Server aka system_server spawned by zygote.
 # Most of the framework services run in this process.
