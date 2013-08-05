@@ -45,3 +45,9 @@ allow netd hostapd:process signal;
 
 # Start dnsmasq
 domain_auto_trans(netd, dnsmasq_exec, dnsmasq)
+allow netd dnsmasq:process signal;
+
+# Allow netd to start clatd in its own domain
+domain_auto_trans(netd, clatd_exec, clatd)
+allow netd clatd:process signal;
+
