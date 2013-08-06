@@ -39,3 +39,5 @@ allow bluetooth proc_bluetooth_writable:file rw_file_perms;
 # bluetooth file transfers
 allow bluetooth sdcard_internal:dir create_dir_perms;
 allow bluetooth sdcard_internal:file create_file_perms;
+allow bluetooth sdcard_external:dir create_dir_perms;
+allow bluetooth sdcard_external:file create_file_perms;
