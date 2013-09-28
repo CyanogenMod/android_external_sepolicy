@@ -17,3 +17,6 @@ allow system cache_backup_file:dir relabelto;
 allow system apk_data_file:file relabelto;
 allow system apk_tmp_file:file relabelto;
 allow system apk_private_tmp_file:file relabelto;
+
+# Access to wake locks
+allow system sysfs_wake_lock:file rw_file_perms;
