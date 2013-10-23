@@ -85,7 +85,7 @@ type security_file, file_type;
 # device policy
 type bluetooth_efs_file, file_type;
 # /sys/devices/system/cpu
-type sysfs_devices_system_cpu, file_type;
+type sysfs_devices_system_cpu, file_type, sysfs_type;
 
 # Socket types
 type adbd_socket, file_type;
