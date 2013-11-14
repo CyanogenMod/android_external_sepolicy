@@ -63,6 +63,7 @@ allow vold asec_image_file:dir rw_dir_perms;
 security_access_policy(vold)
 allow vold asec_apk_file:dir { rw_dir_perms setattr };
 allow vold asec_apk_file:file { r_file_perms setattr };
+allow vold sdcard_external:file { read write getattr open };
 
 # Non-FAT storage via sdcard daemon
 allow vold kernel:process setsched;
