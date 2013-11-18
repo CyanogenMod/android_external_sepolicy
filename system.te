@@ -239,3 +239,6 @@ allow system usb_device:dir r_dir_perms;
 
 # Allow system to talk to sensors
 allow system sensors_device:chr_file rw_file_perms;
+
+# System server can manage sysfs too
+allow system sysfs_writable:file rw_file_perms;
