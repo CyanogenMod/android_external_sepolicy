@@ -109,6 +109,30 @@ allow appdomain self:netlink_route_socket {
 allow appdomain self:rawip_socket create_socket_perms;
 
 ###
+### CTS-specific rules
+###
+
+# For cts/tools/device-setup/TestDeviceSetup/src/android/tests/getinfo/RootProcessScanner.java.
+# Reads /proc/pid/status and statm entries to check that
+# no unexpected root processes are running.
+# Also for cts/tests/tests/security/src/android/security/cts/VoldExploitTest.java
+# Reads /proc/pid/cmdline of vold.
+allow appdomain domain:dir { open read search getattr };
+allow appdomain domain:{ file lnk_file } { open read getattr };
+
+# For cts/tests/tests/permission/src/android/permission/cts/FileSystemPermissionTest.java.
+# testRunAsHasCorrectCapabilities
+allow appdomain runas_exec:file getattr;
+# Others are either allowed elsewhere or not desired.
+
+# For cts/tests/tests/security/src/android/security/cts/SELinuxTest.java
+# Check SELinux policy and contexts.
+selinux_check_access(appdomain)
+selinux_check_context(appdomain)
+# Validate that each process is running in the correct security context.
+allow appdomain domain:process getattr;
+
+###
 ### Neverallow rules
 ###
 ### These are things that Android apps should NEVER be able to do
@@ -140,7 +164,6 @@ neverallow { appdomain -unconfineddomain }
         netlink_tcpdiag_socket
         netlink_nflog_socket
         netlink_xfrm_socket
-        netlink_selinux_socket
         netlink_audit_socket
         netlink_ip6fw_socket
         netlink_dnrt_socket
