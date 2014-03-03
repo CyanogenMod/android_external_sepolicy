@@ -51,3 +51,6 @@ allow zygote init:binder call;
 allow zygote shell_data_file:file { write getattr };
 allow zygote system:binder { transfer call };
 allow zygote servicemanager:binder { call };
+
+# zygote talks to init
+unix_socket_connect(zygote, property, init);
