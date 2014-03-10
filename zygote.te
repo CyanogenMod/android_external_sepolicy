@@ -54,3 +54,4 @@ allow zygote servicemanager:binder { call };
 
 # zygote talks to init
 unix_socket_connect(zygote, property, init);
+allow zygote system_prop:property_service set;
