@@ -10,4 +10,5 @@ platform_app_domain(media_app)
 net_domain(media_app)
 unconfined_domain(media_app)
 relabelto_domain(media_app)
+allow media_app app_data_file:dir relabelfrom;
 allow media_app download_file:dir relabelto;
