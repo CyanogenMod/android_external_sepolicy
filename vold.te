@@ -72,3 +72,6 @@ allow vold asec_apk_file:dir { rw_dir_perms setattr };
 allow vold asec_apk_file:file { r_file_perms setattr };
 allow vold sdcard_external:dir create_dir_perms;
 allow vold sdcard_external:file create_file_perms;
+
+# Vold can also run as minivold in the rootfs
+allow vold rootfs:file entrypoint;
