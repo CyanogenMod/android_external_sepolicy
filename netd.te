@@ -44,7 +44,11 @@ allow netd dhcp:process signal;
 # these capabilities
 allow netd self:capability { dac_override chown fowner };
 allow netd wifi_data_file:file create_file_perms;
-allow netd wifi_data_file:dir rw_dir_perms;
+allow netd wifi_data_file:dir create_dir_perms;
+allow netd wifi_data_file:sock_file { create setattr unlink write };
+
+# Allow netd to chmod dir /data/misc/dhcp
+allow netd dhcp_data_file:dir create_dir_perms;
 
 # Needed to update /data/misc/net/rt_tables
 allow netd net_data_file:file create_file_perms;
