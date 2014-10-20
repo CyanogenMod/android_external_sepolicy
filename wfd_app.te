@@ -1,0 +1,7 @@
+#
+# wfd service run with the system UID, but needs special privilege.
+# Define a new domain for wfd
+
+type wfd_app, domain;
+#permissive_or_unconfined(wfd_app)
+app_domain(wfd_app)
