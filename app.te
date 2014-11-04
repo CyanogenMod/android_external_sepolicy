@@ -13,6 +13,13 @@ unix_socket_connect(appdomain, keystore, keystore)
 # Receive and use open file descriptors inherited from zygote.
 allow appdomain zygote:fd use;
 
+# gdbserver for ndk-gdb reads the zygote.
+# valgrind needs mmap exec for zygote
+allow appdomain zygote_exec:file rx_file_perms;
+
+# gdbserver for ndk-gdb ptrace attaches to app process.
+allow appdomain self:process ptrace;
+
 # Read system properties managed by zygote.
 allow appdomain zygote_tmpfs:file read;
 
