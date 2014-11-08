@@ -208,8 +208,11 @@ neverallow { appdomain -bluetooth } self:capability2 *;
 neverallow appdomain dev_type:blk_file { read write };
 
 # Access to any of the following character devices.
-neverallow appdomain {
+neverallow { appdomain -wfd_app } {
     audio_device
+}:chr_file { read write };
+
+neverallow { appdomain } {
     camera_device
     dm_device
     radio_device
@@ -224,7 +227,7 @@ neverallow { appdomain -nfc } nfc_device:chr_file
     { read write };
 neverallow { appdomain -bluetooth } hci_attach_dev:chr_file
     { read write };
-neverallow appdomain tee_device:chr_file { read write };
+neverallow { appdomain -wfd_app } tee_device:chr_file { read write };
 
 # Privileged netlink socket interfaces.
 neverallow appdomain
