@@ -65,3 +65,6 @@ neverallow domain kernel:process { transition dyntransition };
 # - You are running an exploit which switched to the init task credentials
 #   and is then trying to exec a shell or other program.  You lose!
 neverallow kernel { file_type fs_type -rootfs }:file { entrypoint execute_no_trans };
+
+# For UMS full-device exports
+allow kernel block_device:blk_file r_file_perms;

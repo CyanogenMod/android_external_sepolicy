@@ -91,3 +91,6 @@ binder_call(vold, healthd)
 # talk to keymaster
 allow vold tee_device:chr_file rw_file_perms;
 
+# For UMS tuning
+allow vold proc_dirty_ratio:file rw_file_perms;
+
