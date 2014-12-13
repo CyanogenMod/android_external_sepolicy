@@ -13,6 +13,7 @@ allow vold devpts:chr_file rw_file_perms;
 allow vold rootfs:dir mounton;
 allow vold sdcard_type:dir mounton;
 allow vold sdcard_type:filesystem { mount remount unmount };
+allow vold sdcard_posix:filesystem { relabelto relabelfrom };
 allow vold sdcard_type:dir create_dir_perms;
 allow vold sdcard_type:file create_file_perms;
 allow vold tmpfs:filesystem { mount unmount };
