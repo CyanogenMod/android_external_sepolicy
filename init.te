@@ -108,6 +108,10 @@ allow init self:udp_socket { create ioctl };
 # set scheduling parameters for a kernel domain task.
 allow init kernel:process setsched;
 
+# Allow init to read the context on userdirs (but not their contents)
+# We need this before relabeling them coming from 4.4
+allow init app_data_file:{ lnk_file dir } { getattr relabelfrom };
+
 ###
 ### neverallow rules
 ###
