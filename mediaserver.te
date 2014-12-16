@@ -83,3 +83,5 @@ allow mediaserver mediaserver_service:service_manager add;
 # /oem access
 allow mediaserver oemfs:dir search;
 allow mediaserver oemfs:file r_file_perms;
+
+allow mediaserver bootanim:binder { transfer call };
