@@ -208,9 +208,9 @@ neverallow { domain -init } security_file:{ dir file lnk_file } { relabelfrom re
 # system_server is for creating subdirectories under /data/security.
 neverallow { domain -init -system_server } security_file:dir { create setattr };
 # Only system_server can create subdirectories and files under /data/security.
-neverallow { domain -system_server } security_file:dir { rename write add_name remove_name rmdir };
-neverallow { domain -system_server } security_file:file { create setattr write append unlink link rename };
-neverallow { domain -system_server } security_file:lnk_file { create setattr unlink rename };
+neverallow { domain -system_server -recovery } security_file:dir { rename write add_name remove_name rmdir };
+neverallow { domain -system_server -recovery } security_file:file { create setattr write append unlink link rename };
+neverallow { domain -system_server -recovery } security_file:lnk_file { create setattr unlink rename };
 
 # Only init prior to switching context should be able to set enforcing mode.
 # init starts in kernel domain and switches to init domain via setcon in
@@ -283,8 +283,8 @@ neverallow {
 } { fs_type -rootfs }:file execute;
 
 # Only the init property service should write to /data/property.
-neverallow { domain -init } property_data_file:dir { create setattr relabelfrom rename write add_name remove_name rmdir };
-neverallow { domain -init } property_data_file:file { create setattr relabelfrom write append unlink link rename };
+neverallow { domain -init -recovery } property_data_file:dir { create setattr relabelfrom rename write add_name remove_name rmdir };
+neverallow { domain -init -recovery } property_data_file:file { create setattr relabelfrom write append unlink link rename };
 
 # Only recovery should be doing writes to /system
 neverallow { domain -recovery } { system_file exec_type }:dir_file_class_set
