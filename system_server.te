@@ -130,6 +130,7 @@ allow system_server surfaceflinger:unix_stream_socket { read write setopt };
 binder_use(system_server)
 binder_call(system_server, binderservicedomain)
 binder_call(system_server, appdomain)
+binder_call(system_server, bootanim)
 binder_call(system_server, dumpstate)
 binder_service(system_server)
 
@@ -283,6 +284,10 @@ allow system_server powerctl_prop:property_service set;
 allow system_server ctl_default_prop:property_service set;
 allow system_server ctl_dhcp_pan_prop:property_service set;
 allow system_server ctl_bugreport_prop:property_service set;
+allow system_server ctl_bootanim_prop:property_service set;
+
+# Use open file provided by bootanim.
+allow system_server bootanim:fd use;
 
 # Create a socket for receiving info from wpa.
 type_transition system_server wifi_data_file:sock_file system_wpa_socket;
