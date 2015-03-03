@@ -1,3 +1,20 @@
+# This file was modified by Dolby Laboratories, Inc. The portions of the
+# code that are surrounded by "DOLBY..." are copyrighted and
+# licensed separately, as follows:
+#
+#  (C) 2015 Dolby Laboratories, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 #
 # Apps that run with the system UID, e.g. com.android.system.ui,
 # com.android.settings.  These are not as privileged as the system
@@ -40,6 +57,9 @@ auditallow system_app system_radio_prop:property_service set;
 allow system_app system_prop:property_service set;
 allow system_app ctl_bugreport_prop:property_service set;
 allow system_app logd_prop:property_service set;
+# DOLBY_START
+allow system_app dolby_prop:property_service set;
+# DOLBY_END
 
 # Create /data/anr/traces.txt.
 allow system_app anr_data_file:dir ra_dir_perms;
