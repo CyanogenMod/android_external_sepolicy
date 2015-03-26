@@ -1,67 +1,10 @@
 #include <getopt.h>
-#include <unistd.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <sepol/policydb/policydb.h>
-#include <sepol/policydb/services.h>
 #include <sepol/policydb/expand.h>
-#include <sepol/policydb/util.h>
-#include <stdbool.h>
 
-void usage(char *arg0)
-{
-    fprintf(stderr, "%s [-e|--equiv] [-d|--diff] [-D|--dups] [-p|--permissive] -P <policy file>\n", arg0);
-    exit(1);
-}
+#include "typecmp.h"
 
-int load_policy(char *filename, policydb_t * policydb, struct policy_file *pf)
-{
-    int fd;
-    struct stat sb;
-    void *map;
-    int ret;
-
-    fd = open(filename, O_RDONLY);
-    if (fd < 0) {
-        fprintf(stderr, "Can't open '%s':  %s\n", filename, strerror(errno));
-        return 1;
-    }
-    if (fstat(fd, &sb) < 0) {
-        fprintf(stderr, "Can't stat '%s':  %s\n", filename, strerror(errno));
-        close(fd);
-        return 1;
-    }
-    map = mmap(NULL, sb.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
-    if (map == MAP_FAILED) {
-        fprintf(stderr, "Can't mmap '%s':  %s\n", filename, strerror(errno));
-        close(fd);
-        return 1;
-    }
-
-    policy_file_init(pf);
-    pf->type = PF_USE_MEMORY;
-    pf->data = map;
-    pf->len = sb.st_size;
-    if (policydb_init(policydb)) {
-        fprintf(stderr, "Could not initialize policydb!\n");
-        close(fd);
-        munmap(map, sb.st_size);
-        return 1;
-    }
-    ret = policydb_read(policydb, pf, 0);
-    if (ret) {
-        fprintf(stderr, "error(s) encountered while parsing configuration\n");
-        close(fd);
-        munmap(map, sb.st_size);
-        return 1;
-    }
-
-    return 0;
+void typecmp_usage() {
+    fprintf(stderr, "\ttypecmp [-d|--diff] [-e|--equiv]\n");
 }
 
 static int insert_type_rule(avtab_key_t * k, avtab_datum_t * d,
@@ -174,20 +117,6 @@ static void free_type_rules(struct avtab_node *l)
     }
 }
 
-static void display_allow(policydb_t *policydb, avtab_key_t *key, int idx,
-                          uint32_t perms)
-{
-    printf("    allow %s %s:%s { %s };\n",
-           policydb->p_type_val_to_name[key->source_type
-                                        ? key->source_type - 1 : idx],
-           key->target_type == key->source_type ? "self" :
-           policydb->p_type_val_to_name[key->target_type
-                                        ? key->target_type - 1 : idx],
-           policydb->p_class_val_to_name[key->target_class - 1],
-           sepol_av_to_string
-           (policydb, key->target_class, perms));
-}
-
 static int find_match(policydb_t *policydb, struct avtab_node *l1,
                       int idx1, struct avtab_node *l2, int idx2)
 {
@@ -225,7 +154,7 @@ static int find_match(policydb_t *policydb, struct avtab_node *l1,
     return 0;
 }
 
-static int analyze_types(policydb_t * policydb, char equiv, char diff)
+static int analyze_types(policydb_t * policydb, char diff, char equiv)
 {
     avtab_t exp_avtab, exp_cond_avtab;
     struct avtab_node *type_rules, *l1, *l2;
@@ -256,7 +185,7 @@ static int analyze_types(policydb_t * policydb, char equiv, char diff)
 
     if (expand_avtab(policydb, &policydb->te_cond_avtab, &exp_cond_avtab)) {
         fputs("out of memory\n", stderr);
-        avtab_destroy(&exp_avtab);
+        avtab_destroy(&exp_avtab); /*  */
         return -1;
     }
 
@@ -335,151 +264,32 @@ static int analyze_types(policydb_t * policydb, char equiv, char diff)
     return 0;
 }
 
-static int find_dups_helper(avtab_key_t * k, avtab_datum_t * d,
-                            void *args)
-{
-    policydb_t *policydb = args;
-    ebitmap_t *sattr, *tattr;
-    ebitmap_node_t *snode, *tnode;
-    unsigned int i, j;
-    avtab_key_t avkey;
-    avtab_ptr_t node;
-    struct type_datum *stype, *ttype, *stype2, *ttype2;
-    bool attrib1, attrib2;
+int typecmp_func (int argc, char **argv, policydb_t *policydb) {
+    char ch, diff = 0, equiv = 0;
 
-    if (!(k->specified & AVTAB_ALLOWED))
-        return 0;
-
-    if (k->source_type == k->target_type)
-        return 0; /* self rule */
-
-    avkey.target_class = k->target_class;
-    avkey.specified = k->specified;
-
-    sattr = &policydb->type_attr_map[k->source_type - 1];
-    tattr = &policydb->type_attr_map[k->target_type - 1];
-    stype = policydb->type_val_to_struct[k->source_type - 1];
-    ttype = policydb->type_val_to_struct[k->target_type - 1];
-    attrib1 = stype->flavor || ttype->flavor;
-    ebitmap_for_each_bit(sattr, snode, i) {
-        if (!ebitmap_node_get_bit(snode, i))
-            continue;
-        ebitmap_for_each_bit(tattr, tnode, j) {
-            if (!ebitmap_node_get_bit(tnode, j))
-                continue;
-            avkey.source_type = i + 1;
-            avkey.target_type = j + 1;
-            if (avkey.source_type == k->source_type &&
-                avkey.target_type == k->target_type)
-                continue;
-            if (avkey.source_type == avkey.target_type)
-                continue; /* self rule */
-            stype2 = policydb->type_val_to_struct[avkey.source_type - 1];
-            ttype2 = policydb->type_val_to_struct[avkey.target_type - 1];
-            attrib2 = stype2->flavor || ttype2->flavor;
-            if (attrib1 && attrib2)
-                continue; /* overlapping attribute-based rules */
-            for (node = avtab_search_node(&policydb->te_avtab, &avkey);
-                 node != NULL;
-                 node = avtab_search_node_next(node, avkey.specified)) {
-                uint32_t perms = node->datum.data & d->data;
-                if ((attrib1 && perms == node->datum.data) ||
-                    (attrib2 && perms == d->data)) {
-                    /*
-                     * The attribute-based rule is a superset of the
-                     * non-attribute-based rule.  This is a dup.
-                     */
-                    printf("Duplicate allow rule found:\n");
-                    display_allow(policydb, k, i, d->data);
-                    display_allow(policydb, &node->key, i, node->datum.data);
-                    printf("\n");
-                }
-            }
-        }
-    }
-
-    return 0;
-}
-
-static int find_dups(policydb_t * policydb)
-{
-    if (avtab_map(&policydb->te_avtab, find_dups_helper, policydb))
-        return -1;
-    return 0;
-}
-
-static int list_permissive(policydb_t * policydb)
-{
-    struct ebitmap_node *n;
-    unsigned int bit;
-
-    /*
-     * iterate over all domains and check if domain is in permissive
-     */
-    ebitmap_for_each_bit(&policydb->permissive_map, n, bit)
-    {
-        if (ebitmap_node_get_bit(n, bit)) {
-            printf("%s\n", policydb->p_type_val_to_name[bit -1]);
-        }
-    }
-    return 0;
-}
-
-int main(int argc, char **argv)
-{
-    char *policy = NULL;
-    struct policy_file pf;
-    policydb_t policydb;
-    char ch;
-    char equiv = 0, diff = 0, dups = 0, permissive = 0;
-
-    struct option long_options[] = {
-        {"equiv", no_argument, NULL, 'e'},
+    struct option typecmp_options[] = {
         {"diff", no_argument, NULL, 'd'},
-        {"dups", no_argument, NULL, 'D'},
-        {"permissive", no_argument, NULL, 'p'},
-        {"policy", required_argument, NULL, 'P'},
+        {"equiv", no_argument, NULL, 'e'},
         {NULL, 0, NULL, 0}
     };
 
-    while ((ch = getopt_long(argc, argv, "edDpP:", long_options, NULL)) != -1) {
+    while ((ch = getopt_long(argc, argv, "de", typecmp_options, NULL)) != -1) {
         switch (ch) {
-        case 'e':
-            equiv = 1;
-            break;
         case 'd':
             diff = 1;
             break;
-        case 'D':
-            dups = 1;
-            break;
-        case 'p':
-            permissive = 1;
-            break;
-        case 'P':
-            policy = optarg;
+        case 'e':
+            equiv = 1;
             break;
         default:
-            usage(argv[0]);
+            USAGE_ERROR = true;
+            return -1;
         }
     }
 
-    if (!policy || (!equiv && !diff && !dups && !permissive))
-        usage(argv[0]);
-
-    if (load_policy(policy, &policydb, &pf))
-        exit(1);
-
-    if (equiv || diff)
-        analyze_types(&policydb, equiv, diff);
-
-    if (dups)
-        find_dups(&policydb);
-
-    if (permissive)
-        list_permissive(&policydb);
-
-    policydb_destroy(&policydb);
-
-    return 0;
+    if (!(diff || equiv)) {
+        USAGE_ERROR = true;
+        return -1;
+    }
+    return analyze_types(policydb, diff, equiv);
 }
