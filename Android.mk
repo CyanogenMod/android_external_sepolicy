@@ -39,7 +39,7 @@ build_policy = $(call uniq,$(foreach type, $(1), \
     ) \
   ) \
 ))
-build_policy = $(foreach type, $(1), $(wildcard $(addsuffix /$(type), $(LOCAL_PATH) $(BOARD_SEPOLICY_DIRS))))
+build_policy = $(call uniq, $(foreach type, $(1), $(wildcard $(addsuffix /$(type), $(LOCAL_PATH) $(BOARD_SEPOLICY_DIRS)))))
 
 sepolicy_build_files := security_classes \
                         initial_sids \
