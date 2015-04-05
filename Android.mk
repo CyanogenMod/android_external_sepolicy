@@ -63,7 +63,7 @@ $(foreach pf, $(BOARD_SEPOLICY_UNION), \
 # both BOARD_SEPOLICY_REPLACE and BOARD_SEPOLICY_UNION
 # product variables.
 # $(1): the set of policy name paths to build
-build_policy = $(foreach type, $(1), \
+build_policy = $(call uniq,$(foreach type, $(1), \
   $(filter-out $(BOARD_SEPOLICY_IGNORE), \
     $(foreach expanded_type, $(notdir $(wildcard $(addsuffix /$(type), $(LOCAL_PATH)))), \
       $(if $(filter $(expanded_type), $(BOARD_SEPOLICY_REPLACE)), \
@@ -77,7 +77,7 @@ build_policy = $(foreach type, $(1), \
       ) \
     ) \
   ) \
-)
+))
 
 sepolicy_build_files := security_classes \
                         initial_sids \
