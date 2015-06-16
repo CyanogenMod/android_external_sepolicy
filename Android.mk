@@ -113,6 +113,7 @@ $(sepolicy_policy.conf) : $(call build_policy, $(sepolicy_build_files))
 	@mkdir -p $(dir $@)
 	$(hide) m4 -D mls_num_sens=$(PRIVATE_MLS_SENS) -D mls_num_cats=$(PRIVATE_MLS_CATS) \
 		-D target_build_variant=$(TARGET_BUILD_VARIANT) \
+		-D shipping_build=$(CYNGN_TARGET) \
 		-D force_permissive_to_unconfined=$(FORCE_PERMISSIVE_TO_UNCONFINED) \
 		-s $^ > $@
 	$(hide) sed '/dontaudit/d' $@ > $@.dontaudit
