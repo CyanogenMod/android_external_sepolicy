@@ -302,6 +302,12 @@ define(`non_system_app_set', `{ appdomain -system_app }')
 define(`recovery_only', ifelse(target_recovery, `true', $1, ))
 
 #####################################
+# Bootchart
+# SELinux rules which apply only to bootchart builds
+#
+define(`bootchart', ifelse(init_bootchart, `true', $1, ))
+
+#####################################
 # Userdebug or eng builds
 # SELinux rules which apply only to userdebug or eng builds
 #
