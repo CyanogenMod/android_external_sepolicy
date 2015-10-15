@@ -457,7 +457,10 @@ neverallow system_server { bluetooth_data_file nfc_data_file shell_data_file app
 # a bug (for example, bug 16317188), or represents an attempt by
 # system server to dynamically load a dex file, something we do not
 # want to allow.
-neverallow system_server dex2oat_exec:file no_x_file_perms;
+ifelse(shipping_build, `true',
+  `neverallow system_server dex2oat_exec:file no_x_file_perms;'
+,
+)
 
 # The only block device system_server should be accessing is
 # the frp_block_device. This helps avoid a system_server to root
