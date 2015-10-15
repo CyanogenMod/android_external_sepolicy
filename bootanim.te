@@ -17,3 +17,4 @@ allow bootanim audio_device:dir r_dir_perms;
 allow bootanim audio_device:chr_file rw_file_perms;
 
 allow bootanim mediaserver:binder { transfer call };
+allow bootanim surfaceflinger_service:service_manager find;
