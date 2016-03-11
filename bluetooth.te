@@ -3,6 +3,8 @@ type bluetooth, domain;
 app_domain(bluetooth)
 net_domain(bluetooth)
 
+wakelock_use(bluetooth);
+
 # Data file accesses.
 allow bluetooth bluetooth_data_file:dir create_dir_perms;
 allow bluetooth bluetooth_data_file:notdevfile_class_set create_file_perms;
