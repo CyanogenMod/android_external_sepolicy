@@ -25,7 +25,8 @@ allow bluetooth { tun_device uhid_device hci_attach_dev }:chr_file rw_file_perms
 # TODO: This should no longer be needed with bluedroid for bluetooth
 # but may be getting used for other non-bluetooth sockets that has no
 # specific class defined.  Consider taking to specific domains.
-allow bluetoothdomain self:socket create_socket_perms;
+allow { bluetoothdomain -untrusted_app -isolated_app -shell } self:socket create_socket_perms;
+neverallow { untrusted_app isolated_app shell } { untrusted_app isolated_app shell }:socket *;
 
 # sysfs access.
 allow bluetooth sysfs_bluetooth_writable:file rw_file_perms;
